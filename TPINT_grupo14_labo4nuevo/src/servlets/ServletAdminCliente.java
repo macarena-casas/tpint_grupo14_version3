@@ -109,29 +109,29 @@ public class ServletAdminCliente extends HttpServlet {
 
     	HttpSession session = request.getSession(false);
     	if (session == null) {
-    	    // Si la sesión no existe, redirige al login
-    	    System.out.println("Sesión no encontrada. Redirigiendo a Login.jsp.");
+    	    
+    	    
     	    request.getRequestDispatcher("/Login.jsp").forward(request, response);
     	    
     	}
 
     	if (session != null) {
-    	    // Si la sesión existe, obtenemos el userId
+    	    
     	    Integer userId = (Integer) session.getAttribute("userId");
     	    if (userId != null) {
-    	        System.out.println("Usuario autenticado. userId: " + userId);
+    	      
     	        
     	        Conexion conexion = new Conexion();
     	        try {
-    	            // Ejecutamos la consulta con el userId
-    	            System.out.println("Preparando consulta para obtener datos del cliente.");
+    	            
+    	           
     	            conexion.setearConsulta("SELECT * FROM clientes WHERE usuario_id = ?");
     	            conexion.setearParametros(1, userId);
     	            ResultSet rs = conexion.ejecutarLectura();
     	            
     	            if (rs.next()) {
-    	                // Si se encuentra un cliente, procesamos la información
-    	                System.out.println("Cliente encontrado. Procesando datos...");
+    	                
+    	                
     	                
     	                String nombreCliente = rs.getString("nombre");
     	                String apellidoCliente = rs.getString("apellido");
@@ -144,7 +144,7 @@ public class ServletAdminCliente extends HttpServlet {
     	                String correo = rs.getString("correo_electronico");
     	                String telefono = rs.getString("telefono");
 
-    	                // Establecemos los atributos para la JSP
+    	                
     	                request.setAttribute("nombreCliente", nombreCliente);
     	                request.setAttribute("apellidoCliente", apellidoCliente);
     	                request.setAttribute("dni", dni);
@@ -156,37 +156,37 @@ public class ServletAdminCliente extends HttpServlet {
     	                request.setAttribute("correo", correo);
     	                request.setAttribute("telefono", telefono);
 
-    	                // Redirigimos a la página DetalleCliente.jsp
-    	                System.out.println("Datos del cliente preparados. Redirigiendo a DetalleCliente.jsp.");
+    	               
+    	               
     	                request.getRequestDispatcher("DetalleCliente.jsp").forward(request, response);
     	               
     	            } else {
-    	                // Si no se encuentra el cliente, mostrar error y evitar forward
-    	                System.out.println("No se encontró la cuenta asociada al usuario.");
+    	                
+    	                
     	                request.setAttribute("error", "No se encontró la cuenta asociada al usuario.");
-    	                request.getRequestDispatcher("errorPage.jsp").forward(request, response);  // Redirigir a una página de error
+    	                request.getRequestDispatcher("errorPage.jsp").forward(request, response); 
     	            }
 
     	            rs.close();
     	            conexion.cerrarConexion();
 
     	        } catch (Exception e) {
-    	            // Manejo de excepciones
-    	            System.out.println("Error al obtener los datos de la cuenta.");
+    	            
+    	            
     	            e.printStackTrace();
     	            request.setAttribute("error", "Error al obtener los datos de la cuenta.");
-    	            request.getRequestDispatcher("errorPage.jsp").forward(request, response);  // Redirigir a una página de error
+    	            request.getRequestDispatcher("errorPage.jsp").forward(request, response);  
     	        }
     	    } else {
-    	        // Si no hay userId en la sesión
-    	        System.out.println("Usuario no autenticado.");
+    	      
+    	      
     	        request.setAttribute("error", "Usuario no autenticado.");
-    	        request.getRequestDispatcher("errorPage.jsp").forward(request, response);  // Redirigir a una página de error
+    	        request.getRequestDispatcher("errorPage.jsp").forward(request, response); 
     	    }
     	} else {
-    	    // Si la sesión es nula, redirige al login
-    	    System.out.println("Sesión expirada o no encontrada. Redirigiendo a Login.jsp.");
-    	    response.sendRedirect("Login.jsp");  // Este sí es un redireccionamiento
+    	  
+    	   
+    	    response.sendRedirect("Login.jsp");  
     	}
     	
     	if(request.getParameter("btnGuardarCambios") != null) {
@@ -200,7 +200,7 @@ public class ServletAdminCliente extends HttpServlet {
 				if(localidad.getProvincia().getIdprovincia() != provincia.getIdprovincia()){
 					throw new Exception("La localidad no pertenece a la provincia seleccionada");
 				}
-				String regex = "[a-zA-ZñÑáéíóúÁÉÍÓÚ\\s]+"; //Solo admite caracteres alfabeticos
+				String regex = "[a-zA-ZñÑáéíóúÁÉÍÓÚ\\s]+"; 
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(request.getParameter("nombre"));
 				if(!matcher.matches()) {
