@@ -1,5 +1,6 @@
 package daoImpl;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,8 +17,8 @@ public class Conexion {
     private ResultSet lector;
     private String url = "jdbc:mysql://localhost:3306/EmeraldBank_GRUPO14?useSSL=false&useUnicode=yes";
     private String user = "root"; 
-    //private String password = "root";
-    private String password = "";
+    private String password = "root";
+    //private String password = "";
 
     public Conexion() {
         try {  
@@ -84,6 +85,8 @@ public class Conexion {
             comando.setLong(index, (Long) obj);
         }else if (obj instanceof Date) {
         	comando.setDate(index, (java.sql.Date) obj); 
+        }else if (obj instanceof  BigDecimal) {
+        	comando.setBigDecimal(index, (BigDecimal) obj); 
         }
         else if (obj == null) {
             comando.setNull(index, java.sql.Types.NULL);

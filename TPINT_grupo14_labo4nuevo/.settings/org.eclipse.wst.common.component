@@ -3,6 +3,6 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <property name="context-root" value="para_adelantar"/>
-        <property name="java-output-path" value="/para_adelantar/build/classes"/>
+        <property name="java-output-path" value="/TPINT_grupo14_labo4nuevo/build/classes"/>
     </wb-module>
 </project-modules>
