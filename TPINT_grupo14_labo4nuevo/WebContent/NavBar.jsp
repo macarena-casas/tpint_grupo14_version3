@@ -90,7 +90,7 @@
 
 						<a href="MenuAdmin.jsp"
 							class="dropdown-item border-bottom border-success text-dark">Menú</a>
-							<form action="ServletAdminCliente" method="post">
+							<form action="ServletCliente" method="post">
 							<button type="submit" value="true" class="dropdown-item text-dark">Ver detalle de cuenta</button>
 							</form>
 						<a href="ServletAdminCliente?btnAgregarCliente"
@@ -115,7 +115,7 @@
 
 						<a href="MenuCliente.jsp"
 							class="dropdown-item border-bottom border-success text-dark">Menú</a>
-							<form action="ServletAdminCliente" method="post">
+							<form action="ServletCliente" method="post">
 							<button type="submit" value="true" class="dropdown-item text-dark">Ver detalle de cuenta</button>
 							</form>
 						<a href="ServletCliente?btnPerfil" class="dropdown-item text-dark">Perfil</a>

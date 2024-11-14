@@ -78,9 +78,9 @@
 						<td style="text-align: center"><%=cliente.getSexo()%></td>
 						<td style="text-align: center"><%=cliente.getNacionalidad()%></td>
 						<td>
-							<form action="ServletAdminCliente" method="get">
+							<form action="ServletCliente" method="get">
 								<center>
-									<input type="hidden" name="dni" value="">
+									<input type="hidden" name="dni" value="<%= cliente.getDni() %>">
 									<button type="submit" name="btnDetalle" value="detalle"
 										class="btn btn-outline-success">
 										<i class="bi bi-plus-lg" style="color: black;"></i>
@@ -92,7 +92,7 @@
 						<td>
 							<form action="ServletAdminCliente" method="get">
 								<center>
-									<input type="hidden" name="dni" value="">
+									<input type="hidden" name="dni" value="<%= cliente.getDni() %>">
 									<button type="submit" name="btnModificar" value="modificar"
 										class="btn btn-outline-warning">
 										<i class="bi bi-pencil-square" style="color: black;"></i>
@@ -103,7 +103,7 @@
 						<td>
 							<form action="ServletAdminCliente" method="get" onsubmit="">
 								<center>
-									<input type="hidden" name="dni" value="">
+									<input type="hidden" name="dni" value="<%= cliente.getDni() %>">
 									<button type="submit" name="btnEliminar" value="eliminar"
 										class="btn btn-outline-danger">
 										<i class="bi bi-trash3" style="color: black;"></i>

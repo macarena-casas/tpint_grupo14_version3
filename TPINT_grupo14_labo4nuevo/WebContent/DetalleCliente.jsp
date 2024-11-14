@@ -39,9 +39,17 @@
                                 <label class="form-label" for="nombre">Nombre:</label>
                                 <input type="text" id="nombre" name="nombre" value="<%= request.getAttribute("nombreCliente") %>" class="form-control" disabled>
                             </div>
+                            
                             <div class="col-md-6 mb-4">
                                 <label class="form-label" for="apellido">Apellido:</label>
                                 <input type="text" id="apellido" name="apellido" value="<%= request.getAttribute("apellidoCliente") %>" class="form-control" disabled>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" for="nombre">Dni:</label>
+                                <input type="text" id="dni" name="dni" value="<%= request.getAttribute("dni") %>" class="form-control" disabled>
+                            </div><div class="col-md-6 mb-4">
+                                <label class="form-label" for="nombre">Cuil:</label>
+                                <input type="text" id="Cuil" name="Cuil" value="<%= request.getAttribute("cuil") %>" class="form-control" disabled>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label class="form-label" for="sexo">Sexo:</label>

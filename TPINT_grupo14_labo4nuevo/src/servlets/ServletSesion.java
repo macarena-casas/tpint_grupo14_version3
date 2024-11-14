@@ -63,7 +63,9 @@ public class ServletSesion extends HttpServlet {
 				if (rs.next()) {
 					int userId = rs.getInt("usuario_id");
 					int tipousuario = rs.getInt("tipo_usuario_id");
-
+					
+					
+					
 					session.setAttribute("userId", userId);
 					session.setAttribute("tipo_usuario_id", tipousuario);
 					session.setAttribute("usuario", username);

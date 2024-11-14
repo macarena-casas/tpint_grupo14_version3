@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import daoImpl.ClienteDaoImpl;
 import daoImpl.Conexion;
 import negocioImpl.ClienteNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
@@ -79,20 +80,61 @@ public class ServletAdminCliente extends HttpServlet {
             
         }else if (request.getParameter("btnDetalle") != null) {
             String dni = request.getParameter("dni");
+            
             Cliente auxCliente = (Cliente)listaClientes1.stream().filter(x -> x.getDni().equals(dni)).findFirst().orElse(null);
             request.setAttribute("ClienteDetalle", auxCliente);
+            request.setAttribute("dni", dni);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/DetalleCliente.jsp");
             dispatcher.forward(request, response);
-            
-        }else if (request.getParameter("btnModificar") != null) {
+        } else if (request.getParameter("btnModificar") != null) {
             String dni = request.getParameter("dni");
+           
+
+            
             Cliente auxCliente = clienteNegocioImpl.get(dni);
+            if (auxCliente != null) {
+                System.out.println("Cliente encontrado: " + auxCliente.getNombre() + " " + auxCliente.getApellido());
+            } else {
+                System.out.println("Cliente no encontrado");
+            }
+
             request.setAttribute("ClienteDetalle", auxCliente);
             cargarDesplegables(request);
+            
+            
+            
+            List<Provincia> provincias = provinciaNegocioImpl.list();
+            List<Localidad> localidades = localidadNegocioImpl.list();
+            if (provincias != null && !provincias.isEmpty()) {
+                System.out.println("Provincias cargadas correctamente.");
+            } else {
+                System.out.println("No se encontraron provincias.");
+            }
+            if (localidades != null && !localidades.isEmpty()) {
+                System.out.println("Localidades cargadas correctamente.");
+            } else {
+                System.out.println("No se encontraron localidades.");
+            }
+        
+            
+            
+            request.setAttribute("provincias", provincias);
+            request.setAttribute("localidades", localidades);
+            request.setAttribute("nombreCliente", auxCliente.getNombre());
+            request.setAttribute("apellidoCliente", auxCliente.getApellido());
+            request.setAttribute("dni", auxCliente.getDni());
+            request.setAttribute("cuil", auxCliente.getCuil());
+            request.setAttribute("sexo", auxCliente.getSexo());
+            request.setAttribute("nacionalidad", auxCliente.getNacionalidad());
+            request.setAttribute("fechanacimiento", auxCliente.getFechaNacimiento());
+            request.setAttribute("direccion", auxCliente.getDireccion());
+            request.setAttribute("telefono", auxCliente.getTelefono());
+            request.setAttribute("email", auxCliente.getCorreo());
+            
             RequestDispatcher dispatcher = request.getRequestDispatcher("/ModificarCliente.jsp");
             dispatcher.forward(request, response);
-            
-        }else if(request.getParameter("btnEliminar") != null) {
+        } 
+        else if(request.getParameter("btnEliminar") != null) {
         	String dni = request.getParameter("dni");
 			String respuesta = clienteNegocioImpl.delete(clienteNegocioImpl.get(dni));
             session.setAttribute("respuesta", respuesta);
@@ -114,80 +156,9 @@ public class ServletAdminCliente extends HttpServlet {
     	    request.getRequestDispatcher("/Login.jsp").forward(request, response);
     	    
     	}
+    	
+    	
 
-    	if (session != null) {
-    	    
-    	    Integer userId = (Integer) session.getAttribute("userId");
-    	    if (userId != null) {
-    	      
-    	        
-    	        Conexion conexion = new Conexion();
-    	        try {
-    	            
-    	           
-    	            conexion.setearConsulta("SELECT * FROM clientes WHERE usuario_id = ?");
-    	            conexion.setearParametros(1, userId);
-    	            ResultSet rs = conexion.ejecutarLectura();
-    	            
-    	            if (rs.next()) {
-    	                
-    	                
-    	                
-    	                String nombreCliente = rs.getString("nombre");
-    	                String apellidoCliente = rs.getString("apellido");
-    	                String dni = rs.getString("dni");
-    	                String cuil = rs.getString("cuil");
-    	                String sexo = rs.getString("sexo");
-    	                String nacionalidad = rs.getString("nacionalidad");
-    	                Date fechanacimiento = rs.getDate("fecha_nacimiento");
-    	                String direccion = rs.getString("direccion");
-    	                String correo = rs.getString("correo_electronico");
-    	                String telefono = rs.getString("telefono");
-
-    	                
-    	                request.setAttribute("nombreCliente", nombreCliente);
-    	                request.setAttribute("apellidoCliente", apellidoCliente);
-    	                request.setAttribute("dni", dni);
-    	                request.setAttribute("cuil", cuil);
-    	                request.setAttribute("sexo", sexo);
-    	                request.setAttribute("nacionalidad", nacionalidad);
-    	                request.setAttribute("fechanacimiento", fechanacimiento);
-    	                request.setAttribute("direccion", direccion);
-    	                request.setAttribute("correo", correo);
-    	                request.setAttribute("telefono", telefono);
-
-    	               
-    	               
-    	                request.getRequestDispatcher("DetalleCliente.jsp").forward(request, response);
-    	               
-    	            } else {
-    	                
-    	                
-    	                request.setAttribute("error", "No se encontró la cuenta asociada al usuario.");
-    	                request.getRequestDispatcher("errorPage.jsp").forward(request, response); 
-    	            }
-
-    	            rs.close();
-    	            conexion.cerrarConexion();
-
-    	        } catch (Exception e) {
-    	            
-    	            
-    	            e.printStackTrace();
-    	            request.setAttribute("error", "Error al obtener los datos de la cuenta.");
-    	            request.getRequestDispatcher("errorPage.jsp").forward(request, response);  
-    	        }
-    	    } else {
-    	      
-    	      
-    	        request.setAttribute("error", "Usuario no autenticado.");
-    	        request.getRequestDispatcher("errorPage.jsp").forward(request, response); 
-    	    }
-    	} else {
-    	  
-    	   
-    	    response.sendRedirect("Login.jsp");  
-    	}
     	
     	if(request.getParameter("btnGuardarCambios") != null) {
 			try{
@@ -245,6 +216,9 @@ public class ServletAdminCliente extends HttpServlet {
 			}        	
          	
          }
+    	
+    	
+    		
     	 else if(request.getParameter("btnAgregarClienteNuevo") != null) { 
     		       		  
     		   Provincia auxProv = (Provincia)listaProvincia.stream().filter(x -> x.getIdprovincia() ==  Integer.parseInt(request.getParameter("provincia"))).findFirst().orElse(null);
@@ -318,9 +292,9 @@ public class ServletAdminCliente extends HttpServlet {
            }
     		    
     	 } 
-        
+    	}
        }
-    }
+    
     
     
     
