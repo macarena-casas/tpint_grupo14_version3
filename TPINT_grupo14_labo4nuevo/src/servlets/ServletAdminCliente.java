@@ -205,7 +205,7 @@ public class ServletAdminCliente extends HttpServlet {
     	        }
     	        System.out.println("Localidad pertenece a la provincia seleccionada.");
 
-    	        // Validar el nombre
+    	        
     	        String regex = "[a-zA-ZÒ—·ÈÌÛ˙¡…Õ”⁄\\s]+";
     	        Pattern pattern = Pattern.compile(regex);
     	        String nombre = request.getParameter("nombre");
@@ -216,7 +216,7 @@ public class ServletAdminCliente extends HttpServlet {
     	            throw new Exception("El nombre debe contener exclusivamente caracteres alfabÈticos.");
     	        }
     	        
-    	        // Obtener la fecha de nacimiento como String desde el formulario
+    	        
     	        String fechaNacimientoStr = request.getParameter("fechanacimiento");
     	        System.out.println("Fecha de nacimiento recibida: " + fechaNacimientoStr);
 
@@ -224,14 +224,14 @@ public class ServletAdminCliente extends HttpServlet {
     	        Date fechaNacimiento = null;
     	        if (fechaNacimientoStr != null && !fechaNacimientoStr.isEmpty()) {
     	            try {
-    	                // Convertir la cadena recibida a java.util.Date
+    	                
     	                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     	                java.util.Date parsedDate = format.parse(fechaNacimientoStr);
 
-    	                // Si es necesario, convertirlo a java.sql.Date
+    	                
     	                fechaNacimiento = new java.sql.Date(parsedDate.getTime());
     	            } catch (ParseException e) {
-    	                // Si no se puede parsear la fecha, lanzar excepciÛn
+    	                
     	                throw new Exception("Fecha de nacimiento inv·lida.");
     	            }
     	        } else {
@@ -304,7 +304,7 @@ public class ServletAdminCliente extends HttpServlet {
 
     	    } catch (Exception e) {
     	        System.out.println("Error al guardar los cambios: " + e.getMessage());
-    	        e.printStackTrace(); // Esto ayudar· a ver m·s detalles del error
+    	        e.printStackTrace(); 
     	        request.setAttribute("respuesta", "Error al guardar los cambios: " + e.getMessage());
     	    } finally {
     	        listaClientes1 = clienteNegocioImpl.list();
