@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+
 import java.sql.Date;
 import entidad.Cliente;
 import entidad.Cuenta;
@@ -113,33 +115,34 @@ public class CuentaDaoImpl implements CuentaDao {
 		return false;
 	}
 
+
 	@Override
-	public String delete(int nroCuenta) {
-
-		String respuesta = null;
-
-		try {
-			if (!prestamosPorCuenta(nroCuenta)) {
-				conexion.setearConsulta(delete);
-				conexion.setearParametros(1, nroCuenta);
-
-				if (conexion.ejecutarAccion() > 0) {
-					conexion.commit();
-					respuesta = "La cuenta nro " + nroCuenta + " fue eliminada exitosamente";
-				} else {
-					respuesta = "La cuenta nro " + nroCuenta + " no se pudo eliminar";
-				}
-			} else {
-				respuesta = "La cuenta tiene préstamos vigentes y no puede darse de baja.";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			conexion.rollback();
-		} finally {
-			conexion.cerrarConexion();
-		}
-		return respuesta;
-
+	public boolean delete(int nrodecuenta) {
+		System.out.println("Tipo de nrodecuenta: " + ((Object) nrodecuenta).getClass().getName());
+		String consulta = "UPDATE cuentas SET estado = false WHERE numero_cuenta = ?";
+	    System.out.println(consulta);
+	    Conexion conecta = new Conexion();
+	    
+	    try {
+	        conecta.setearConsulta(consulta);
+	        System.out.println("Valor de nrodecuenta: " + nrodecuenta);
+	        conecta.setearParametros(1, nrodecuenta);
+	        int filas = conecta.ejecutarAccion();
+	        System.out.println("Filas afectadas: " + filas);
+	        if (filas > 0) {
+	        	conecta.commit();
+	        	System.out.println("El estado de la cuenta ha sido actualizado.");
+	        	return true;
+	        }
+	        
+	        } catch (Exception e) {
+	    	System.out.println("Error al ejecutar la consulta DELETE"+ nrodecuenta);
+	        e.printStackTrace();
+	        conecta.rollback();
+	    } finally {
+	        conecta.cerrarConexion();
+	    }
+	    return false;
 	}
 
 	@Override

@@ -18,11 +18,11 @@ public class CuentaNegocioImpl implements CuentaNegocio {
         return cuentaDao.insert(cuenta);
     }
 
-    @Override
-    public String delete(int nroCuenta) {
-        return cuentaDao.delete(nroCuenta);
-    }
-
+	public boolean delete(int nrodecuenta) {
+		CuentaDaoImpl cuentaDaoImpl = new CuentaDaoImpl();
+		return cuentaDaoImpl.delete(nrodecuenta);
+	}
+	
     @Override
     public boolean update(int nroCuenta, String tipoCuenta, BigDecimal saldo) {
         return cuentaDao.update(nroCuenta, tipoCuenta,saldo);

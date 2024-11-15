@@ -14,7 +14,7 @@ public interface CuentaDao {
 	
 	public Cuenta get(int nroCuenta);
 	public ArrayList<Cuenta> list();
-	public String delete(int nroCuenta);
+	public boolean delete(int nrodecuenta);
 	public boolean prestamosPorCuenta(int nroCuenta);
 	public int getLastId();
 }

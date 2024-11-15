@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import negocioImpl.CuentaNegocioImpl;
 
 @WebServlet("/ServletAdminCuentas")
@@ -28,8 +29,16 @@ public class ServletAdminCuentas extends HttpServlet {
         	RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarCuentas.jsp");
         	dispatcher.forward(request, response);
         }
+		else if(request.getParameter("btnEliminar") != null) {
+			int nrodecuenta = Integer.parseInt(request.getParameter("cuentaId").toString());
+			CuentaNegocioImpl cuentaNegocioimpl = new CuentaNegocioImpl();
+			if(cuentaNegocioimpl.delete(nrodecuenta)) {
+				request.setAttribute("listaCuentas", cuentaNegocioimpl.list());
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarCuentas.jsp");
+	        	dispatcher.forward(request, response);
+			}
+		}
 	}
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub

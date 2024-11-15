@@ -36,7 +36,7 @@ if (request.getAttribute("listaCuentas") != null){
                         <th>Nro de Cuenta</th>
                         <th>CBU</th>
                         <th>Saldo</th>
-                        <th>Detalle</th>
+                       
                         <th>Modificar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -53,21 +53,16 @@ if (request.getAttribute("listaCuentas") != null){
                         <td class="text-center"><%=obj.getNroCuenta() %></td>
                         <td class="text-center"><%=obj.getCbu() %></td>
                         <td class="text-center">$<%=obj.getSaldo() %></td>
+
                         <td>
-                            <form action="ServletAdminCuenta" method="get">
-                                <input type="hidden" name="cuentaId" value="123456789">
-                                <button type="submit" name="btnDetalle" value="detalle" class="btn btn-success" style="color:black;">Detalle</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="ServletAdminCuenta" method="get">
-                                <input type="hidden" name="cuentaId" value="123456789">
+                            <form action="ServletAdminCuentas" method="get">
+                                <input type="hidden" name="cuentaId" value=<%=obj.getNroCuenta() %>>
                                 <button type="submit" name="btnModificar" value="modificar" class="btn btn-warning btn-block" style="color:black;">Modificar</button>
                             </form>
                         </td>
                         <td>
-                            <form action="ServletAdminCuenta" method="get" onsubmit="return confirm('¿Está seguro de que desea eliminar esta cuenta?');">
-                                <input type="hidden" name="cuentaId" value="123456789">
+                            <form action="ServletAdminCuentas" method="get" >
+                                <input type="hidden" name="cuentaId" value=<%=obj.getNroCuenta() %>>
                                 <button type="submit" name="btnEliminar" value="eliminar" class="btn btn-danger btn-block" style="color:black;">Eliminar</button>
                             </form>
                         </td>
