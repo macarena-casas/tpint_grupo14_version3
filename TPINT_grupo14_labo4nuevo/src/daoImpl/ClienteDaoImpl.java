@@ -111,33 +111,48 @@ public class ClienteDaoImpl implements ClienteDao {
 
 	@Override
 	public boolean update(Cliente cliente) {
-		Conexion cone = new Conexion();
-		boolean isUpdateExitoso = false;
+	    Conexion cone = new Conexion();
+	    boolean isUpdateExitoso = false;
 
-		try {
-			cone.setearConsulta(update);
-			cone.setearParametros(1, cliente.getCuil());
-			cone.setearParametros(2, cliente.getNombre());
-			cone.setearParametros(3, cliente.getApellido());
-			cone.setearParametros(4, String.valueOf(cliente.getSexo()));
-			cone.setearParametros(5, cliente.getNacionalidad());
-			cone.setearParametros(6, cliente.getFechaNacimiento());
-			cone.setearParametros(7, cliente.getDireccion());
-			cone.setearParametros(8, cliente.getLocalidad().getIdlocalidad());
-			cone.setearParametros(9, cliente.getLocalidad().getProvincia().getIdprovincia());
-			cone.setearParametros(10, cliente.getCorreo());
-			cone.setearParametros(11, cliente.getTelefono());
-			cone.setearParametros(12, cliente.getDni());
+	    try {
+	        // Validación de parámetros (puedes ajustarlo según lo que consideres necesario)
+	        if (cliente.getCuil() == null || cliente.getNombre() == null || cliente.getApellido() == null || cliente.getDni() == null) {
+	            throw new IllegalArgumentException("Algunos parámetros esenciales están vacíos.");
+	        }
 
-			if (cone.ejecutarAccion() > 0) {
+	        // Configurar la consulta con los parámetros
+	        cone.setearConsulta(update);
+	        cone.setearParametros(1, cliente.getCuil());
+	        cone.setearParametros(2, cliente.getNombre());
+	        cone.setearParametros(3, cliente.getApellido());
+	        cone.setearParametros(4, String.valueOf(cliente.getSexo()));
+	        cone.setearParametros(5, cliente.getNacionalidad());
+	        cone.setearParametros(6, cliente.getFechaNacimiento());
+	        cone.setearParametros(7, cliente.getDireccion());
+	        cone.setearParametros(8, cliente.getLocalidad().getIdlocalidad());
+	        cone.setearParametros(9, cliente.getLocalidad().getProvincia().getIdprovincia());
+	        cone.setearParametros(10, cliente.getCorreo());
+	        cone.setearParametros(11, cliente.getTelefono());
+	        cone.setearParametros(12, cliente.getDni());
 
-				isUpdateExitoso = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			cone.rollback();
-		}
-		return isUpdateExitoso;
+	        // Ejecutar la actualización
+	        if (cone.ejecutarAccion() > 0) {
+	            isUpdateExitoso = true;
+	        } else {
+	            System.out.println("No se actualizó ninguna fila.");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        cone.rollback();  // Realiza un rollback si ocurre un error
+	    } catch (IllegalArgumentException e) {
+	        e.printStackTrace();
+	        // Agregar manejo específico para este tipo de error (parámetros nulos)
+	    } finally {
+	        cone.cerrarConexion();  // Asegurarse de cerrar la conexión siempre
+	    }
+
+	    return isUpdateExitoso;
 	}
 
 	@Override

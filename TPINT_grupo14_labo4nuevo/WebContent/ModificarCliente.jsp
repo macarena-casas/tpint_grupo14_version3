@@ -28,11 +28,11 @@
                     <center>
                         <h2 class="text-3xl font-medium title-font mb-2 text-gray-900">Modificar Cliente</h2>
                     </center>
-                            <center>
-                                <div class="col-12 border-bottom pb-4">
-                                    <h3 class="text-lg font-medium title-font mb-2 text-gray-700">Datos Personales</h3>
-                                </div>
-                            </center>
+                    <center>
+                        <div class="col-12 border-bottom pb-4">
+                            <h3 class="text-lg font-medium title-font mb-2 text-gray-700">Datos Personales</h3>
+                        </div>
+                    </center>
                     <br>
                     <form action="ServletAdminCliente" method="post" onsubmit="return validarFormulario(event);">
                         <div class="row">
@@ -62,12 +62,12 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label class="form-label" for="nacionalidad1">Nacionalidad:</label>
-                                <input id="text" name="nacionalidad1" class="form-control" value="<%= request.getAttribute("nacionalidad") %>" required>                            
+                                <input id="nacionalidad" name="nacionalidad" class="form-control" value="<%= request.getAttribute("nacionalidad") %>" required>                            
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="fecha-nacimiento">Fecha de Nacimiento:</label>
-                                <input type="date" max="2006-01-01" min="1930-01-01" id="fecha-nacimiento" name="fechanacimiento" class="date" value="<%= request.getAttribute("fechanacimiento") %>" required>
-                            </div>
+    							<label class="block text-gray-700 text-sm font-bold mb-2" for="fechanacimiento">Fecha de Nacimiento:</label>
+    							<input type="date" id="fechanacimiento" name="fechanacimiento" class="date" value="<%= request.getAttribute("fechanacimiento")  != null ? request.getAttribute("fechanacimiento") : "" %>" required>
+							</div>
                             <div class="col-md-6 mb-4">
                                 <label class="form-label" for="direccion">Dirección:</label>
                                 <input type="text" id="direccion" name="direccion" value="<%= request.getAttribute("direccion") %>" class="form-control" required>
@@ -104,10 +104,10 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label class="form-label" for="email">Correo:</label>
-                                <input type="email" id="email" name="email" value="<%= request.getAttribute("email") %>" class="form-control" required>
+                                <input type="email" id="correo" name="correo" value="<%= request.getAttribute("correo") %>" class="form-control" required>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-success w-100">Guardar Cambios</button>
+                                <button type="submit" name="btnGuardarCambios" class="btn btn-success w-100">Guardar Cambios</button>
                             </div>
                         </div>
                     </form>

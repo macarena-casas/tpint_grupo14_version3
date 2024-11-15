@@ -254,7 +254,7 @@ public class PrestamoDaoImpl implements PrestamoDao {
 	    Conexion conexion = new Conexion();
 	    
 	    try {
-	        conexion.setearConsulta("CALL obtenerPrestamosPorDni(?, ?, ?, ?, ?, ?)");
+	        conexion.setearConsulta("CALL obtenerPrestamos(?, ?, ?, ?, ?, ?)");
 	        conexion.setearParametros(1, dniCliente);
 	        conexion.setearParametros(2, fechaInicio);
 	        conexion.setearParametros(3, fechaFin);
