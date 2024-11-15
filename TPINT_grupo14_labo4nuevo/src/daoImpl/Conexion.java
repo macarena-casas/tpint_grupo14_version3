@@ -18,7 +18,7 @@ public class Conexion {
     private String url = "jdbc:mysql://localhost:3306/EmeraldBank_GRUPO14?useSSL=false&useUnicode=yes";
     private String user = "root"; 
     private String password = "root";
-    //private String password = "";
+   //private String password = "";
 
     public Conexion() {
         try {  
@@ -87,7 +87,10 @@ public class Conexion {
         	comando.setDate(index, (java.sql.Date) obj); 
         }else if (obj instanceof  BigDecimal) {
         	comando.setBigDecimal(index, (BigDecimal) obj); 
+        }else if (obj instanceof Character) {
+        	comando.setString(index, obj.toString()); 
         }
+        
         else if (obj == null) {
             comando.setNull(index, java.sql.Types.NULL);
         } else {

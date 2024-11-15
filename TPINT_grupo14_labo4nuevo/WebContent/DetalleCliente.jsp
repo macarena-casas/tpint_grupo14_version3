@@ -24,7 +24,7 @@
         <div class="w-90 p-4 bg-white bg-opacity-80 pt-5">
             <div class="container mx-auto px-4 py-8">
                 <div class="w-66 mx-auto">
-                    <center>
+              <center>
                         <h2 class="text-3xl font-medium title-font mb-2 text-gray-900">Detalle del cliente</h2>
                     </center>
                     <br>
@@ -75,6 +75,17 @@
                                 <label class="form-label" for="telefono">Teléfono:</label>
                                 <input type="text" id="telefono" name="telefono" value="<%= request.getAttribute("telefono") %>" class="form-control" disabled>
                             </div>
+                            <div class="col-span-1 md:col-span-2 border-b pb-4 mt-4">
+                    <h3 class="text-lg font-medium title-font mb-2 text-gray-700">Datos de la Cuenta</h3>
+                </div>
+             <div class="col-md-6 mb-4">
+                                <label class="form-label" for="nombre-usuario">Nombre de Usuario:</label>
+                    <input type="text" id="nombre-usuario" name="nombre-usuario" class="form-control" value="<%= request.getAttribute("usuario") %>" readonly>
+                </div>
+                 <div class="col-md-6 mb-4">
+                                <label class="form-label" for="contrasena">Contraseña:</label>
+                    <input type="password" id="contrasena" name="contrasena" class="form-control" value="<%= request.getAttribute("contra") %>" readonly>
+                </div>          
                         </div>
                     </form>
                 </div>

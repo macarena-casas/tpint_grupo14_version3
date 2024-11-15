@@ -47,7 +47,22 @@ public class Cliente {
 		this.telefono = telefono;
 		this.usuario = usuario;
 	}
-    
+    public Cliente(String dni, String cuil, String nombre, String apellido, char sexo,
+ 			String nacionalidad, Date fechaNacimiento, String direccion, Localidad localidad, String correo,
+ 			String telefono) {
+ 		this.dni = dni;
+ 		this.cuil = cuil;
+ 		this.nombre = nombre;
+ 		this.apellido = apellido;
+ 		this.sexo = sexo;
+ 		this.nacionalidad = nacionalidad;
+ 		this.fechaNacimiento = fechaNacimiento;
+ 		this.direccion = direccion;
+ 		this.localidad = localidad;
+ 		this.correo = correo;
+ 		this.telefono = telefono;
+ 		
+ 	}
 	public String getDni() {
 		return dni;
 	}

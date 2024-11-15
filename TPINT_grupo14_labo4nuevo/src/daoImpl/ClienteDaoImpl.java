@@ -13,7 +13,7 @@ import dao.ClienteDao;
 
 public class ClienteDaoImpl implements ClienteDao {
 
-	private static final String update = "UPDATE clientes SET cuil = ?, nombre = ?, apellido = ?, sexo = ?, nacionalidad = ?, fecha_nacimiento = ?, direccion = ?, localidad_id = ?, provincia_id = ?, correo_electronico = ?, telefono = ? WHERE dni = ?";
+	private static final String update = "UPDATE clientes SET nombre = ?, apellido = ?, sexo = ?, direccion = ?, localidad_id = ?, provincia_id = ?, correo_electronico = ?, telefono = ? WHERE dni = ?";
 	private static final String insert = "INSERT INTO clientes(dni, cuil, nombre ,apellido ,sexo ,nacionalidad ,fecha_nacimiento ,direccion ,localidad_id ,correo_electronico ,telefono ,usuario_id ,provincia_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)";	
 
 	private static final String delete = "CALL SP_BAJA_CLIENTE(?,?)";
@@ -109,51 +109,40 @@ public class ClienteDaoImpl implements ClienteDao {
 		return tienePrestamos;
 	}
 
+
 	@Override
 	public boolean update(Cliente cliente) {
-	    Conexion cone = new Conexion();
-	    boolean isUpdateExitoso = false;
+		Conexion cone = new Conexion();
+		boolean isUpdateExitoso = false;
 
-	    try {
-	        // Validación de parámetros (puedes ajustarlo según lo que consideres necesario)
-	        if (cliente.getCuil() == null || cliente.getNombre() == null || cliente.getApellido() == null || cliente.getDni() == null) {
-	            throw new IllegalArgumentException("Algunos parámetros esenciales están vacíos.");
-	        }
+		try {
+			cone.setearConsulta(update);
+			
+			cone.setearParametros(1, cliente.getNombre());
+			cone.setearParametros(2, cliente.getApellido());
+			cone.setearParametros(3, cliente.getSexo());
+			cone.setearParametros(4, cliente.getDireccion());
+			cone.setearParametros(5, cliente.getLocalidad().getIdlocalidad());
+			cone.setearParametros(6, cliente.getLocalidad().getProvincia().getIdprovincia());
+			cone.setearParametros(7, cliente.getCorreo());
+			cone.setearParametros(8, cliente.getTelefono());
+			cone.setearParametros(9, cliente.getDni());
 
-	        // Configurar la consulta con los parámetros
-	        cone.setearConsulta(update);
-	        cone.setearParametros(1, cliente.getCuil());
-	        cone.setearParametros(2, cliente.getNombre());
-	        cone.setearParametros(3, cliente.getApellido());
-	        cone.setearParametros(4, String.valueOf(cliente.getSexo()));
-	        cone.setearParametros(5, cliente.getNacionalidad());
-	        cone.setearParametros(6, cliente.getFechaNacimiento());
-	        cone.setearParametros(7, cliente.getDireccion());
-	        cone.setearParametros(8, cliente.getLocalidad().getIdlocalidad());
-	        cone.setearParametros(9, cliente.getLocalidad().getProvincia().getIdprovincia());
-	        cone.setearParametros(10, cliente.getCorreo());
-	        cone.setearParametros(11, cliente.getTelefono());
-	        cone.setearParametros(12, cliente.getDni());
 
-	        // Ejecutar la actualización
-	        if (cone.ejecutarAccion() > 0) {
-	            isUpdateExitoso = true;
-	        } else {
-	            System.out.println("No se actualizó ninguna fila.");
-	        }
+			if (cone.ejecutarAccion() > 0) {
+				cone.commit();
+				isUpdateExitoso = true;
+			}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        cone.rollback();  // Realiza un rollback si ocurre un error
-	    } catch (IllegalArgumentException e) {
-	        e.printStackTrace();
-	        // Agregar manejo específico para este tipo de error (parámetros nulos)
-	    } finally {
-	        cone.cerrarConexion();  // Asegurarse de cerrar la conexión siempre
-	    }
-
-	    return isUpdateExitoso;
+				
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			cone.rollback();
+		}
+		return isUpdateExitoso;
 	}
+
 
 	@Override
 	public Cliente get(String dni) {

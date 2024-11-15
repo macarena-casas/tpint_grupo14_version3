@@ -41,10 +41,10 @@ import entidad.Usuario;
 @WebServlet("/ServletAdminCliente")
 public class ServletAdminCliente extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private ArrayList<Cliente> listaClientes1 = new ArrayList<Cliente>();
-    private ArrayList<Localidad> listaLocalidad = new ArrayList<Localidad>();
-    private ArrayList<Provincia> listaProvincia = new ArrayList<Provincia>();    
-    private ArrayList<Pais> listaPais = new ArrayList<Pais>();
+	private ArrayList<Cliente> listaClientes1 = new ArrayList<Cliente>();
+	private ArrayList<Localidad> listaLocalidad = new ArrayList<Localidad>();
+	private ArrayList<Provincia> listaProvincia = new ArrayList<Provincia>();
+	private ArrayList<Pais> listaPais = new ArrayList<Pais>();
 
 	private ClienteNegocioImpl clienteNegocioImpl = new ClienteNegocioImpl();
 	private UsuarioNegocioImpl usuarioNegocioImpl = new UsuarioNegocioImpl();
@@ -79,62 +79,23 @@ public class ServletAdminCliente extends HttpServlet {
             dispatcher.forward(request, response);
             
         }else if (request.getParameter("btnDetalle") != null) {
-            String dni = request.getParameter("dni");
-            
-            Cliente auxCliente = (Cliente)listaClientes1.stream().filter(x -> x.getDni().equals(dni)).findFirst().orElse(null);
-            Usuario auxUsu = auxCliente.getUsuario();
-            request.setAttribute("ClienteDetalle", auxCliente);
-            request.setAttribute("dni", dni);
-            
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/DetalleCliente.jsp");
-            dispatcher.forward(request, response);
+			String dni = request.getParameter("dni");
+
+			Cliente auxCliente = (Cliente) listaClientes1.stream().filter(x -> x.getDni().equals(dni)).findFirst()
+					.orElse(null);
+			Usuario auxUsu = auxCliente.getUsuario();
+			request.setAttribute("ClienteDetalle", auxCliente);
+			request.setAttribute("dni", dni);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/DetalleCliente.jsp");
+			dispatcher.forward(request, response);
         } else if (request.getParameter("btnModificar") != null) {
-            String dni = request.getParameter("dni");
-            
-
-            
-            Cliente auxCliente = clienteNegocioImpl.get(dni);
-            if (auxCliente != null) {
-                System.out.println("Cliente encontrado: " + auxCliente.getNombre() + " " + auxCliente.getApellido());
-            } else {
-                System.out.println("Cliente no encontrado");
-            }
-
-            request.setAttribute("ClienteDetalle", auxCliente);
-            cargarDesplegables(request);
-            session.setAttribute("idusu", auxCliente.getUsuario().getIdusuario());
-            
-            
-            List<Provincia> provincias = provinciaNegocioImpl.list();
-            List<Localidad> localidades = localidadNegocioImpl.list();
-            if (provincias != null && !provincias.isEmpty()) {
-                System.out.println("Provincias cargadas correctamente.");
-            } else {
-                System.out.println("No se encontraron provincias.");
-            }
-            if (localidades != null && !localidades.isEmpty()) {
-                System.out.println("Localidades cargadas correctamente.");
-            } else {
-                System.out.println("No se encontraron localidades.");
-            }
-        
-            
-            
-            request.setAttribute("provincias", provincias);
-            request.setAttribute("localidades", localidades);
-            request.setAttribute("nombreCliente", auxCliente.getNombre());
-            request.setAttribute("apellidoCliente", auxCliente.getApellido());
-            request.setAttribute("dni", auxCliente.getDni());
-            request.setAttribute("cuil", auxCliente.getCuil());
-            request.setAttribute("sexo", auxCliente.getSexo());
-            request.setAttribute("nacionalidad", auxCliente.getNacionalidad());
-            request.setAttribute("fechanacimiento", auxCliente.getFechaNacimiento());
-            request.setAttribute("direccion", auxCliente.getDireccion());
-            request.setAttribute("telefono", auxCliente.getTelefono());
-            request.setAttribute("correo", auxCliente.getCorreo());
-            
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/ModificarCliente.jsp");
-            dispatcher.forward(request, response);
+			String dni = request.getParameter("dni");
+			Cliente auxCliente = clienteNegocioImpl.get(dni);
+			request.setAttribute("ClienteDetalle", auxCliente);
+			cargarDesplegables(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/ModificarCliente.jsp");
+			dispatcher.forward(request, response);
         } 
         else if(request.getParameter("btnEliminar") != null) {
         	String dni = request.getParameter("dni");
@@ -163,159 +124,68 @@ public class ServletAdminCliente extends HttpServlet {
 
     	
     	if (request.getParameter("btnGuardarCambios") != null) {
-    	    System.out.println("Botón 'Guardar Cambios' presionado.");
+			Provincia auxProv = (Provincia) listaProvincia.stream()
+					.filter(x -> x.getIdprovincia() == Integer.parseInt(request.getParameter("provincia"))).findFirst()
+					.orElse(null);
+			Localidad auxLoc = (Localidad) listaLocalidad.stream()
+					.filter(x -> x.getIdlocalidad() == Integer.parseInt(request.getParameter("localidad"))).findFirst()
+					.orElse(null);
 
-    	    try {
-    	        // Obtener DNI
-    	        String dni = request.getParameter("dni");
-    	        String cuil = request.getParameter("cuil");
-    	        String direccion = request.getParameter("direccion");
-    	        String nacionalidad = request.getParameter("nacionalidad");
-    	        System.out.println("DNI recibido: " + dni);
-    	        
-    	        // Buscar cliente en la lista
-    	        Cliente auxCliente = (Cliente) listaClientes1.stream().filter(x -> x.getDni().equals(dni)).findFirst().orElse(null);
-    	        System.out.println("Cliente encontrado: " + (auxCliente != null ? auxCliente.getNombre() : "No encontrado"));
+			if (auxProv.getIdprovincia() != auxLoc.getProvincia().getIdprovincia()) {
+				session.setAttribute("respuesta", "La localidad no pertenece a la provincia seleccionada");
+				cargarDesplegables(request);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/ModificarCliente.jsp");
+				dispatcher.forward(request, response);
+			} else {
+				String auxDni = request.getParameter("dni");
+				String auxCuil = request.getParameter("cuil");
+				String auxEmail = request.getParameter("email");
+				String auxUsuario = request.getParameter("usuario");
+				String auxNombre = request.getParameter("nombre");
+				String auxApellido = request.getParameter("apellido");
+				char auxSexo = request.getParameter("sexo").charAt(0);
+				String auxPais = request.getParameter("nacionalidad1");
+				Date auxFecha = Date.valueOf(request.getParameter("fechanacimiento"));
+				String auxDireccion = request.getParameter("direccion");
+				String auxTelefono = request.getParameter("telefono");
 
-    	        // Validar ID de provincia y localidad
-    	        String provinciaStr = request.getParameter("provincia");
-    	        String localidadStr = request.getParameter("localidad");
-    	        System.out.println("ID de provincia recibido: " + provinciaStr);
-    	        System.out.println("ID de localidad recibido: " + localidadStr);
+				int idprovincia = Integer.parseInt(request.getParameter("provincia"));
+				Provincia cProvincia = provinciaNegocioImpl.get(idprovincia);
+				int idlocalidad = Integer.parseInt(request.getParameter("localidad"));
+				Localidad cLocalidad = localidadNegocioImpl.get(idlocalidad);
 
-    	        if (provinciaStr == null || provinciaStr.isEmpty()) {
-    	            throw new Exception("ID de provincia no recibido.");
-    	        }
-    	        if (localidadStr == null || localidadStr.isEmpty()) {
-    	            throw new Exception("ID de localidad no recibido.");
-    	        }
+				cLocalidad.setProvincia(cProvincia);
+				String contraseña = request.getParameter("contrasena");
 
-    	        int idProvincia = Integer.parseInt(provinciaStr);
-    	        int idLocalidad = Integer.parseInt(localidadStr);
+				Cliente cliente = clienteNegocioImpl.get(request.getParameter("dni"));
+				Usuario modUser = usuarioNegocioImpl.get(cliente.getUsuario().getIdusuario());
 
-    	        // Obtener la provincia y localidad
-    	        Provincia provincia = provinciaNegocioImpl.get(idProvincia);
-    	        Localidad localidad = localidadNegocioImpl.get(idLocalidad);
-    	        System.out.println("Provincia: " + provincia.getNombre());
-    	        System.out.println("Localidad: " + localidad.getNombre());
+				modUser.setNombreusuario(auxUsuario);
+				modUser.setContraseña(contraseña);
 
-    	        // Verificar si la localidad pertenece a la provincia
-    	        if (localidad.getProvincia().getIdprovincia() != provincia.getIdprovincia()) {
-    	            throw new Exception("La localidad no pertenece a la provincia seleccionada.");
-    	        }
-    	        System.out.println("Localidad pertenece a la provincia seleccionada.");
+				Cliente Clientenuevo = new Cliente(auxDni, auxCuil, auxNombre, auxApellido, auxSexo, auxPais, auxFecha,
+						auxDireccion, cLocalidad, auxEmail, auxTelefono);
 
-    	        
-    	        String regex = "[a-zA-ZñÑáéíóúÁÉÍÓÚ\\s]+";
-    	        Pattern pattern = Pattern.compile(regex);
-    	        String nombre = request.getParameter("nombre");
-    	        Matcher matcher = pattern.matcher(nombre);
-    	        System.out.println("Nombre recibido: " + nombre);
+				Boolean user_modificado = usuarioNegocioImpl.update(modUser);
 
-    	        if (!matcher.matches()) {
-    	            throw new Exception("El nombre debe contener exclusivamente caracteres alfabéticos.");
-    	        }
-    	        
-    	        
-    	        String fechaNacimientoStr = request.getParameter("fechanacimiento");
-    	        System.out.println("Fecha de nacimiento recibida: " + fechaNacimientoStr);
+				Boolean cli_modificado = clienteNegocioImpl.update(Clientenuevo);
 
-    	        // Validar y convertir la fecha de nacimiento
-    	        Date fechaNacimiento = null;
-    	        if (fechaNacimientoStr != null && !fechaNacimientoStr.isEmpty()) {
-    	            try {
-    	                
-    	                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    	                java.util.Date parsedDate = format.parse(fechaNacimientoStr);
+				if (cli_modificado == true && user_modificado == true) {
+					session.setAttribute("respuesta", "El cliente fue modificado exitosamente");
+					listaClientes1 = clienteNegocioImpl.list();
+					request.setAttribute("Lista_Clientes", listaClientes1);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarClientes.jsp");
+					dispatcher.forward(request, response);
+				} else {
+					session.setAttribute("respuesta", "Error, al modificar el cliente");
+					cargarDesplegables(request);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/ModificarCliente.jsp");
+					dispatcher.forward(request, response);
 
-    	                
-    	                fechaNacimiento = new java.sql.Date(parsedDate.getTime());
-    	            } catch (ParseException e) {
-    	                
-    	                throw new Exception("Fecha de nacimiento inválida.");
-    	            }
-    	        } else {
-    	            throw new Exception("Fecha de nacimiento no recibida.");
-    	        }
-    	        
-    	        
-    	        // Crear el cliente modificado
-    	        
-    	        String apellido = request.getParameter("apellido");
-    	        char sexo = request.getParameter("sexo").charAt(0); 
-    	        String correo = request.getParameter("correo");
-    	        String telefono = request.getParameter("telefons");
-    	        System.out.println("DNI recibido: " + request.getParameter("dni"));
-    	        System.out.println("Cuil recibido: " + request.getParameter("cuil"));
-    	        System.out.println("Nombre recibido: " + request.getParameter("nombre"));
-    	        System.out.println("Apellido recibido: " + request.getParameter("apellido"));
-    	        System.out.println("Sexo recibido: " + request.getParameter("sexo"));
-    	        System.out.println("Fecha de nacimiento recibida: " + fechaNacimiento);
-    	        System.out.println("Nacionalidad recibida: " + request.getParameter("nacionalidad"));
-    	        System.out.println("ID Localidad recibido: " + request.getParameter("localidad"));
-    	        System.out.println("ID Provincia recibido: " + request.getParameter("provincia"));
-    	        System.out.println("Correo recibido: " + request.getParameter("correo"));
-    	        System.out.println("Telefono recibido: " + request.getParameter("telefono"));
-    	        System.out.println("Direccion recibido: " + request.getParameter("direccion"));
+				}
 
-    	        // Validar que todos los parámetros sean correctos
-    	        if (dni != null && cuil!=null && nombre != null && direccion != null && apellido != null && sexo != 0 && nacionalidad != null && fechaNacimiento != null && localidad != null && correo != null && telefono != null) {
-    	            Cliente modCliente = new Cliente(
-    	                dni,
-    	                cuil,
-    	                nombre,
-    	                apellido,
-    	                sexo,
-    	                nacionalidad,
-    	                fechaNacimiento,
-    	                direccion,
-    	                localidad,
-    	                correo,
-    	                telefono,
-    	                new Usuario()
-    	            );
-    	            // Actualizar cliente
-        	        Boolean cli_modificado = clienteNegocioImpl.update(modCliente);
-        	        System.out.println("Cliente modificado: " + cli_modificado);
-    	            System.out.println("Cliente modificado correctamente...");
-    	            // Obtener usuario y actualizar contraseña si es necesario
-    	            Cliente cliente = clienteNegocioImpl.get(dni);
-    	            Usuario modUser = usuarioNegocioImpl.get(cliente.getUsuario().getIdusuario());
-    	            System.out.println("Usuario encontrado: " + (modUser != null ? modUser.getIdusuario() : "No encontrado"));
-    	            
-    	            String nuevaContrasena = request.getParameter("contrasena");
-    	            if (nuevaContrasena != null && !nuevaContrasena.isEmpty()) {
-    	            	modUser.setContraseña(nuevaContrasena);
-    	            }
-    	            Boolean user_modificado = usuarioNegocioImpl.update(modUser);
-    	            System.out.println("Usuario modificado: " + user_modificado);
-    	            
-    	            // Verificar actualización
-    	            if (cli_modificado && user_modificado) {
-    	            	request.setAttribute("respuesta", "Los cambios se guardaron exitosamente");
-    	            } else {
-    	            	throw new Exception("No se pudo guardar todos los cambios.");
-    	            }
-    	        } else {
-    	            System.out.println("Error: Uno o más parámetros son inválidos o nulos.");
-    	        }
-    	       
-    	        
-
-    	    } catch (Exception e) {
-    	        System.out.println("Error al guardar los cambios: " + e.getMessage());
-    	        e.printStackTrace(); 
-    	        request.setAttribute("respuesta", "Error al guardar los cambios: " + e.getMessage());
-    	    } finally {
-    	        listaClientes1 = clienteNegocioImpl.list();
-    	        request.setAttribute("Lista_Clientes", listaClientes1);
-    	        RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarClientes.jsp");
-    	        dispatcher.forward(request, response);
-    	    }
-    	}
-
-
-
+			}
+		}
     	
     	
     		
@@ -410,14 +280,13 @@ public class ServletAdminCliente extends HttpServlet {
         }
     }
     
-    
-    private void cargarDesplegables(HttpServletRequest request) {
-    	listaPais = paisNegocioImpl.list();   	
-      	request.setAttribute("Lista_Paises", listaPais);
-      listaLocalidad = localidadNegocioImpl.list();
-      	request.setAttribute("Lista_Localidades", listaLocalidad);
-      	listaProvincia = provinciaNegocioImpl.list();
-      	request.setAttribute("Lista_Provincias", listaProvincia);
+	private void cargarDesplegables(HttpServletRequest request) {
+		listaPais = paisNegocioImpl.list();
+		request.setAttribute("Lista_Paises", listaPais);
+		listaLocalidad = localidadNegocioImpl.list();
+		request.setAttribute("Lista_Localidades", listaLocalidad);
+		listaProvincia = provinciaNegocioImpl.list();
+		request.setAttribute("Lista_Provincias", listaProvincia);
 	}
 }
 

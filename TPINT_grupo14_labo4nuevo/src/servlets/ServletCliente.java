@@ -52,6 +52,8 @@ public class ServletCliente extends HttpServlet {
        request.setAttribute("direccion", cliente.getDireccion());
        request.setAttribute("correo", cliente.getCorreo());
        request.setAttribute("telefono", cliente.getTelefono());
+       request.setAttribute("usuario", cliente.getUsuario().getNombreusuario());
+       request.setAttribute("contra", cliente.getUsuario().getContraseña());
 
        // Redirigir a la página JSP
        request.getRequestDispatcher("/DetalleCliente.jsp").forward(request, response);

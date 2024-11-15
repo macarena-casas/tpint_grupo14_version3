@@ -87,7 +87,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	        	cone.setearConsulta(update);
 	        	cone.setearParametros(1, usuario.getNombreusuario());
 	        	cone.setearParametros(2,usuario.getContraseña());
-	        	cone.setearParametros(3,usuario.getTipoUsuario().getIdTipousuario());
+	        	cone.setearParametros(3,2);
 	        	cone.setearParametros(4,usuario.getIdusuario());
 	            
 	            if (cone.ejecutarAccion() > 0) {
