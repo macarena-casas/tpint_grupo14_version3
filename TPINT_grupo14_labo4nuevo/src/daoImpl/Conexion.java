@@ -22,8 +22,14 @@ public class Conexion {
 
     public Conexion() {
         try {  
-            this.conexion = DriverManager.getConnection(url, user, password);
-            this.conexion.setAutoCommit(false);
+        	try {
+				Class.forName("com.mysql.jdbc.Driver");
+				this.conexion = DriverManager.getConnection(url, user, password);
+				this.conexion.setAutoCommit(false);
+			} catch (ClassNotFoundException e) {
+			
+				e.printStackTrace();
+			} 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
