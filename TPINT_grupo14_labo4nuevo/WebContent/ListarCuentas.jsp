@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="entidad.Cuenta"%>
 <%@ page import="java.text.DecimalFormat"%>
 <%@ page import="javax.servlet.http.HttpSession"%>
@@ -53,7 +53,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- se agregar�n din�micamente las filas de cuentas desde el servidor -->
+					<!-- se agregarán dinámicamente las filas de cuentas desde el servidor -->
 					<%
 						for (Cuenta obj : listadoCuenta) {
 							saldoFormateado = formato.format(obj.getSaldo());
@@ -92,7 +92,7 @@
 						</td>
 						<td>
 							<form action="ServletAdminCuentas" method="get"
-								onsubmit="return confirm('�Est� seguro de que desea eliminar esta cuenta?');">
+								onsubmit="return confirm('¿Está seguro de que desea eliminar esta cuenta?');">
 								<input type="hidden" name="cuentaId"
 									value="<%=obj.getNroCuenta()%>">
 								<button type="submit" name="btnEliminar" value="eliminar"
@@ -111,11 +111,37 @@
 			</table>
 			<br>
 			<div class="d-flex justify-content-end w-100 mt-4">
-				<a href="MenuAdmin.jsp" class="btn btn-success">Volver al men�</a>
+				<a href="MenuAdmin.jsp" class="btn btn-success">Volver al menú</a>
 			</div>
 		</div>
 	</div>
 	<jsp:include page="Footer.jsp" />
+	<script>
+	$('#tablaCuentas').DataTable({
+	    "paging": true,
+	    "lengthChange": true,
+	    "searching": true,
+	    "ordering": true,
+	    "info": true,
+	    "autoWidth": false,
+	    "responsive": true,
+	    "language": {
+	        "paginate": {
+	            "first": "Primero",
+	            "last": "Último",
+	            "next": "Siguiente",
+	            "previous": "Anterior"
+	        },
+	        "lengthMenu": "Mostrar _MENU_ registros por página", // Reemplaza "MENU" por "_MENU_"
+	        "zeroRecords": "No se encontraron resultados",
+	        "info": "Mostrando página _PAGE_ de _PAGES_", // Reemplaza "PAGE" por "_PAGE_"
+	        "infoEmpty": "No hay registros disponibles",
+	        "infoFiltered": "(filtrado de _MAX_ registros totales)" // Reemplaza "MAX" por "_MAX_"
+	    },
+	    "pageLength": 10 // Esto define el número de registros por página, por defecto 10
+	});
+
+	</script>
 
 </body>
 </html>

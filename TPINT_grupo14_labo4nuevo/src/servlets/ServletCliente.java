@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,10 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 import daoImpl.ClienteDaoImpl;
 import daoImpl.Conexion;
 import entidad.Cliente;
 import entidad.Cuenta;
+import negocioImpl.ClienteNegocioImpl;
 import negocioImpl.CuentaNegocioImpl;
 //import negocioImpl.MovimientosNegocioImpl;
 
@@ -44,7 +47,18 @@ public class ServletCliente extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/PerfilCliente.jsp");
 			dispatcher.forward(request, response);
 		}
-		
+		else if(request.getParameter("btnCuentas")!= null) {
+			   //HttpSession session = request.getSession();
+			   int userId = (int) session.getAttribute("userId");
+			   ClienteNegocioImpl clnegImpl= new ClienteNegocioImpl();
+			   CuentaNegocioImpl cuenImp= new CuentaNegocioImpl();
+			   List<Cuenta> listacuenta = new ArrayList<Cuenta>();
+			   listacuenta= cuenImp.listCuentasPorCliente(clnegImpl.getPorIdUsuario(userId).getDni());
+			   
+			   request.setAttribute("listadeCuentas", listacuenta);
+			   request.getRequestDispatcher("/CuentasClientes.jsp").forward(request, response);
+
+		   }
 
      
 		String dni = request.getParameter("dni"); // Obtener DNI de los parámetros de la URL

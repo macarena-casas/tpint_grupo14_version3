@@ -141,5 +141,31 @@
 		</div>
 	</div>
 	<jsp:include page="Footer.jsp" />
+		<script>
+	$('#tablaClientes').DataTable({
+	    "paging": true,
+	    "lengthChange": true,
+	    "searching": true,
+	    "ordering": true,
+	    "info": true,
+	    "autoWidth": false,
+	    "responsive": true,
+	    "language": {
+	        "paginate": {
+	            "first": "Primero",
+	            "last": "Último",
+	            "next": "Siguiente",
+	            "previous": "Anterior"
+	        },
+	        "lengthMenu": "Mostrar _MENU_ registros por página", // Reemplaza "MENU" por "_MENU_"
+	        "zeroRecords": "No se encontraron resultados",
+	        "info": "Mostrando página _PAGE_ de _PAGES_", // Reemplaza "PAGE" por "_PAGE_"
+	        "infoEmpty": "No hay registros disponibles",
+	        "infoFiltered": "(filtrado de _MAX_ registros totales)" // Reemplaza "MAX" por "_MAX_"
+	    },
+	    "pageLength": 10 // Esto define el número de registros por página, por defecto 10
+	});
+
+	</script>
 </body>
 </html>
