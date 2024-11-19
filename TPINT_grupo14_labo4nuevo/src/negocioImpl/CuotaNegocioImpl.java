@@ -14,14 +14,12 @@ public class CuotaNegocioImpl implements CuotaNegocio {
 
 	@Override
 	public int update(int idCuota, String nroCuenta) {
-		return 0;
-	//	return cuotaDao.update(idCuota, nroCuenta);
+	return cuotaDao.update(idCuota, nroCuenta);
 	}
 
 	@Override
 	public ArrayList<Cuota> listPorIdPrestamo(Prestamo prestamo) {
-	return null;
-		//return cuotaDao.listPorIdPrestamo(prestamo);
+	return cuotaDao.listPorIdPrestamo(prestamo);
 		
 	}
 	

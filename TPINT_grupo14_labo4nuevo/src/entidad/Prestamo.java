@@ -18,7 +18,7 @@ public class Prestamo {
 	public Prestamo() {
 		IdPrestamo = -1;
 		Tipoprestamo = null;
-		Fecha = Date.valueOf("01-01-1900");
+		Fecha = Date.valueOf("1900-01-01");
 	
 		this.cuenta = null;
 		this.cliente = null;

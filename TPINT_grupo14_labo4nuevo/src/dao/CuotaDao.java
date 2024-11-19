@@ -7,10 +7,9 @@ import entidad.Prestamo;
 
 public interface CuotaDao {
 
-		//public boolean update(Cuota cuota_a_modificar);
-			public ArrayList<Cuota> listPorIdPrestamo(Prestamo prestamo);
-			
-			public int update(int idCuota, String nroCuenta);
-		
-	}
+	// public boolean update(Cuota cuota_a_modificar);
+	public ArrayList<Cuota> listPorIdPrestamo(Prestamo prestamo);
 
+	public int update(int idCuota, String nroCuenta);
+
+}

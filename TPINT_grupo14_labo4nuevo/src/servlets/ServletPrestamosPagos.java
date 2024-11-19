@@ -16,6 +16,7 @@ import entidad.Cuenta;
 import entidad.Cuota;
 import entidad.Prestamo;
 import negocioImpl.CuentaNegocioImpl;
+import negocioImpl.CuotaNegocioImpl;
 import negocioImpl.PrestamoNegocioImpl;
 
 
@@ -23,77 +24,80 @@ import negocioImpl.PrestamoNegocioImpl;
 public class ServletPrestamosPagos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PrestamoNegocioImpl prestamoNegocioImpl = new PrestamoNegocioImpl();
-//	private CuotaNegocioImpl cuotaNegocioImpl = new CuotaNegocioImpl();
+	private CuotaNegocioImpl cuotaNegocioImpl = new CuotaNegocioImpl();
 	private ArrayList<Cuota> listaCuotas = new ArrayList<Cuota>();
 	private CuentaNegocioImpl cuentaNegocioImpl = new CuentaNegocioImpl();
 	private ArrayList<Cuenta> cuentasPorCliente = new ArrayList<Cuenta>();
-	private ArrayList<Prestamo> listaPrestamos= new ArrayList<Prestamo>();
+	private ArrayList<Prestamo> listaPrestamos = new ArrayList<Prestamo>();
 
-    public ServletPrestamosPagos() {
-        super();
-      
-    }
+	public ServletPrestamosPagos() {
+		super();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();      	
-		if(request.getParameter("btnPagoDePrestamos")!=null) {
-			
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (request.getParameter("btnPagoDePrestamos") != null) {
+
 			int cantCuentas = (int) session.getAttribute("cantCuentas");
-			if(cantCuentas !=0) {
+			if (cantCuentas != 0) {
 				cargarPrestamos(request);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/PagoPrestamosCliente.jsp");
-				dispatcher.forward(request, response);	
-			}else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/PagoPrestamo.jsp");
+				dispatcher.forward(request, response);
+			} else {
 				session.setAttribute("respuesta", "No tiene cuentas disponibles para acceder a esta opción.");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/MenuCliente.jsp");
-				dispatcher.forward(request, response);		
+				dispatcher.forward(request, response);
 			}
 
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();  		   
-		if(request.getParameter("btnPagarCuota") != null) {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (request.getParameter("btnPagarCuota") != null) {
 			try {
 				int cuotaId = Integer.parseInt(request.getParameter("idCuota"));
 				int nroCuota = Integer.parseInt(request.getParameter("nroCuota"));
 				String nroCuenta = request.getParameter("CuentaOrigen");
-				int prestamoId =  Integer.parseInt(request.getParameter("prestamoId"));
-				/*int pagada = cuotaNegocioImpl.update(cuotaId, nroCuenta);
-				
-				if(pagada == 0) {
+				int prestamoId = Integer.parseInt(request.getParameter("prestamoId"));
+				int pagada = cuotaNegocioImpl.update(cuotaId, nroCuenta);
+
+				if (pagada == 0) {
 					session.setAttribute("respuesta", "Cuota pagada con éxito");
-					
+
 				} else {
-					if(pagada == 45000) {
-						throw new Exception("Error: " + String.valueOf(pagada) + ", saldo insuficiente para pagar la cuota.");
-					}else {
+					if (pagada == 45000) {
+						throw new Exception(
+								"Error: " + String.valueOf(pagada) + ", saldo insuficiente para pagar la cuota.");
+					} else {
 						throw new Exception("Error: " + String.valueOf(pagada) + ", no fue posible pagar la cuota.");
 					}
-					
-				}*/
-				
+
+				}
+
 				cargarPrestamos(request);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/PagoPrestamosCliente.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/PagoPrestamo.jsp");
 				dispatcher.forward(request, response);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				session.setAttribute("respuesta", e.getMessage());
 				cargarPrestamos(request);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/PagoPrestamosCliente.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/PagoPrestamo.jsp");
 				dispatcher.forward(request, response);
 			}
-	     }
+		}
 	}
-	
-    private void cargarPrestamos(HttpServletRequest request) {
-		HttpSession session = request.getSession();  
-		Cliente cliente = (Cliente)session.getAttribute("cliente");
-		cuentasPorCliente = cuentaNegocioImpl.listCuentasPorCliente(cliente.getDni()); 
+
+	private void cargarPrestamos(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Cliente cliente = (Cliente) session.getAttribute("cliente");
+		cuentasPorCliente = cuentaNegocioImpl.listCuentasPorCliente(cliente.getDni());
 		request.setAttribute("Lista_Cuentas_cliente", cuentasPorCliente);
-    	listaPrestamos = prestamoNegocioImpl.listIdPrestamosPorCliente(cliente.getDni());		
-		if(listaPrestamos.isEmpty() || listaPrestamos == null) {
+		listaPrestamos = prestamoNegocioImpl.listIdPrestamosPorCliente(cliente.getDni());
+		if (listaPrestamos.isEmpty() || listaPrestamos == null) {
 			listaPrestamos = null;
 		}
 		request.setAttribute("listaPrestamos", listaPrestamos);

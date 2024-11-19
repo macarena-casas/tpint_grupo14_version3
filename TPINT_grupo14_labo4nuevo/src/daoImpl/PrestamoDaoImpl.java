@@ -13,290 +13,297 @@ import entidad.Cuenta;
 import entidad.TipoPrestamo;
 
 public class PrestamoDaoImpl implements PrestamoDao {
-    private static final String updateEstado = "UPDATE prestamos SET estado_prestamo = ? WHERE prestamo_id = ?";
-    private static final String updateEstadoCancelado = "UPDATE prestamos SET estado = ? WHERE prestamo_id = ?";
-    private static final String insert = "INSERT INTO prestamos(numero_cuenta, fecha, plazo_pago, tipo_prestamo_id, estado_prestamo) VALUES(?, ?, ?, ?, ?)";
-    private static final String list = "SELECT p.*, cli.nombre, cli.apellido FROM prestamos p JOIN cuentas c ON p.numero_cuenta = c.numero_cuenta JOIN clientes cli ON c.dni = cli.dni WHERE p.estado_prestamo = 'En proceso'";
-    private static final String get = "SELECT * FROM prestamos WHERE prestamo_id = ?";
-    private static final String call = "CALL SP_AUTORIZAR_PRESTAMO(?, ?)";
+	private static final String updateEstado = "UPDATE prestamos SET estado_prestamo = ? WHERE prestamo_id = ?";
+	private static final String updateEstadoCancelado = "UPDATE prestamos SET estado = ? WHERE prestamo_id = ?";
+	private static final String insert = "INSERT INTO prestamos(numero_cuenta, fecha, plazo_pago, tipo_prestamo_id, estado_prestamo) VALUES(?, ?, ?, ?, ?)";
+	private static final String list = "SELECT p.*, cli.nombre, cli.apellido FROM prestamos p JOIN cuentas c ON p.numero_cuenta = c.numero_cuenta JOIN clientes cli ON c.dni = cli.dni WHERE p.estado_prestamo = 'En proceso'";
+	private static final String get = "SELECT * FROM prestamos WHERE prestamo_id = ?";
+	private static final String call = "CALL SP_AUTORIZAR_PRESTAMO(?,?)";
+	private static final String listIdPrestamosPorCliente = "SELECT p.prestamo_id, p.plazo_pago FROM prestamos as p INNER JOIN cuentas c ON p.numero_cuenta = c.numero_cuenta INNER JOIN clientes cl ON c.dni = cl.dni WHERE cl.dni = ? AND p.estado_prestamo = 'Autorizado' AND p.estado = 'Vigente'";
 
-    private Conexion conexion;
+	private Conexion conexion;
 
-    public PrestamoDaoImpl() {
-        this.conexion = new Conexion();
-    }
+	public PrestamoDaoImpl() {
+		this.conexion = new Conexion();
+	}
 
-    @Override
-    public boolean insert(Prestamo prestamo) {
-        try {
-            conexion.setearConsulta(insert);
-            conexion.setearParametros(1, prestamo.getCuenta().getNroCuenta());
-            conexion.setearParametros(2, prestamo.getFecha());
-            conexion.setearParametros(3, prestamo.getPlazopago());
-            conexion.setearParametros(4, prestamo.getTipoprestamo().getIdtipoPrestamo());
-            conexion.setearParametros(5, "En proceso");
+	@Override
+	public boolean insert(Prestamo prestamo) {
+		try {
+			conexion.setearConsulta(insert);
+			conexion.setearParametros(1, prestamo.getCuenta().getNroCuenta());
+			conexion.setearParametros(2, prestamo.getFecha());
+			conexion.setearParametros(3, prestamo.getPlazopago());
+			conexion.setearParametros(4, prestamo.getTipoprestamo().getIdtipoPrestamo());
+			conexion.setearParametros(5, "En proceso");
 
-            if (conexion.ejecutarAccion() > 0) {
-                conexion.commit();
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            conexion.rollback();
-        } finally {
-            conexion.cerrarConexion();
-        }
-        return false;
-    }
+			if (conexion.ejecutarAccion() > 0) {
+				conexion.commit();
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexion.rollback();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return false;
+	}
 
-    @Override
-    public boolean update(int idPrestamo, String estado) {
-        try {
-            conexion.setearConsulta(updateEstado);
-            conexion.setearParametros(1, estado);
-            conexion.setearParametros(2, idPrestamo);
+	@Override
+	public boolean update(int idPrestamo, String estado) {
+		boolean exitoso = false;
+		try {
+			conexion.setearConsulta(updateEstado);
+			conexion.setearParametros(1, estado);
+			conexion.setearParametros(2, idPrestamo);
 
-            if (conexion.ejecutarAccion() > 0) {
-                conexion.commit();
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            conexion.rollback();
-        } finally {
-            conexion.cerrarConexion();
-        }
-        return false;
-    }
+			if (conexion.ejecutarAccion() > 0) {
+				conexion.commit();
+				exitoso = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexion.rollback();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return exitoso;
+	}
 
-    @Override
-    public boolean update(int idPrestamo, int cuentaDestino) {
-        try {
-            conexion.setearConsulta(call);
-            conexion.setearParametros(1, idPrestamo);
-            conexion.setearParametros(2, cuentaDestino);
+	@Override
+	public boolean update(int idPrestamo, int cuentaDestino) {
+		boolean exitoso = false;
+		try {
+			conexion.setearConsulta(call);
+			conexion.setearParametros(1, idPrestamo);
+			conexion.setearParametros(2, cuentaDestino);
 
-            if (conexion.ejecutarAccion() > 0) {
-                conexion.commit();
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            conexion.rollback();
-        } finally {
-            conexion.cerrarConexion();
-        }
-        return false;
-    }
+			if (conexion.ejecutarAccion() > 0) {
+				conexion.commit();
+				exitoso = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexion.rollback();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return exitoso;
+	}
 
-    @Override
-    public Prestamo get(int idPrestamo) {
-        Prestamo prestamo = null;
-        try {
-            conexion.setearConsulta(get);
-            conexion.setearParametros(1, idPrestamo);
-            ResultSet resultSet = conexion.ejecutarLectura();
+	@Override
+	public Prestamo get(int idPrestamo) {
+		Prestamo prestamo = null;
+		try {
+			conexion.setearConsulta(get);
+			conexion.setearParametros(1, idPrestamo);
+			ResultSet resultSet = conexion.ejecutarLectura();
 
-            if (resultSet.next()) {
-                int prestamoId = resultSet.getInt("prestamo_id");
-                Date fecha = resultSet.getDate("fecha");
-                int plazoPago = resultSet.getInt("plazo_pago");
-                int tipoPrestamoId = resultSet.getInt("tipo_prestamo_id");
-                String estadoPrestamo = resultSet.getString("estado_prestamo");
+			if (resultSet.next()) {
+				int prestamoId = resultSet.getInt("prestamo_id");
+				Date fecha = resultSet.getDate("fecha");
+				int plazoPago = resultSet.getInt("plazo_pago");
+				int tipoPrestamoId = resultSet.getInt("tipo_prestamo_id");
+				String estadoPrestamo = resultSet.getString("estado_prestamo");
 
-                TipoPrestamo tipoPrestamo = new TipoPrestamoDaoImpl().get(tipoPrestamoId);
-                Cuenta cuenta = new Cuenta(); // Puedes obtener más detalles de la cuenta si necesitas
-                Cliente cliente = new Cliente(); // Igual con el cliente
+				TipoPrestamo tipoPrestamo = new TipoPrestamoDaoImpl().get(tipoPrestamoId);
+				Cuenta cuenta = new Cuenta(); // Puedes obtener más detalles de la cuenta si necesitas
+				Cliente cliente = new Cliente(); // Igual con el cliente
 
-                prestamo = new Prestamo(prestamoId, tipoPrestamo, fecha, cuenta, cliente, plazoPago, estadoPrestamo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conexion.cerrarConexion();
-        }
-        return prestamo;
-    }
+				prestamo = new Prestamo(prestamoId, tipoPrestamo, fecha, cuenta, cliente, plazoPago, estadoPrestamo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return prestamo;
+	}
 
-    @Override
-    public ArrayList<Prestamo> list() {
-        ArrayList<Prestamo> listPrestamos = new ArrayList<>();
-        try {
-            conexion.setearConsulta(list);
-            ResultSet resultSet = conexion.ejecutarLectura();
+	@Override
+	public ArrayList<Prestamo> list() {
+		ArrayList<Prestamo> listPrestamos = new ArrayList<>();
+		try {
+			conexion.setearConsulta(list);
+			ResultSet resultSet = conexion.ejecutarLectura();
 
-            while (resultSet.next()) {
-                int prestamoId = resultSet.getInt("prestamo_id");
-                Date fecha = resultSet.getDate("fecha");
-                int plazoPago = resultSet.getInt("plazo_pago");
-                int tipoPrestamoId = resultSet.getInt("tipo_prestamo_id");
-                String estadoPrestamo = resultSet.getString("estado_prestamo");
-                String nombre = resultSet.getString("nombre");
-                String apellido = resultSet.getString("apellido");
+			while (resultSet.next()) {
+				int prestamoId = resultSet.getInt("prestamo_id");
+				Date fecha = resultSet.getDate("fecha");
+				int plazoPago = resultSet.getInt("plazo_pago");
+				int tipoPrestamoId = resultSet.getInt("tipo_prestamo_id");
+				String estadoPrestamo = resultSet.getString("estado_prestamo");
+				String nombre = resultSet.getString("nombre");
+				String apellido = resultSet.getString("apellido");
 
-                Cliente cliente = new Cliente();
-                cliente.setApellido(apellido);
-                cliente.setNombre(nombre);
+				Cliente cliente = new Cliente();
+				cliente.setApellido(apellido);
+				cliente.setNombre(nombre);
 
-                TipoPrestamo tipoPrestamo = new TipoPrestamoDaoImpl().get(tipoPrestamoId);
-                Cuenta cuenta = new Cuenta(); // Puedes agregar más detalles si necesitas
+				TipoPrestamo tipoPrestamo = new TipoPrestamoDaoImpl().get(tipoPrestamoId);
+				Cuenta cuenta = new Cuenta();
+				cuenta.setNroCuenta(resultSet.getInt("numero_cuenta"));
 
-                Prestamo prestamo = new Prestamo(prestamoId, tipoPrestamo, fecha, cuenta, cliente, plazoPago, estadoPrestamo);
-                listPrestamos.add(prestamo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conexion.cerrarConexion();
-        }
-        return listPrestamos;
-    }
+				Prestamo prestamo = new Prestamo(prestamoId, tipoPrestamo, fecha, cuenta, cliente, plazoPago,
+						estadoPrestamo);
+				listPrestamos.add(prestamo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return listPrestamos;
+	}
 
 	@Override
 	public boolean update(int idPrestamo) {
-	    boolean updateExitoso = false;
-	    Conexion conexion = new Conexion();
-	    try {
-	        conexion.setearConsulta("UPDATE prestamos SET estado_prestamo = ? WHERE prestamo_id = ?");
-	        conexion.setearParametros(1, "Cancelado");
-	        conexion.setearParametros(2, idPrestamo);
+		boolean updateExitoso = false;
+		Conexion conexion = new Conexion();
+		try {
+			conexion.setearConsulta("UPDATE prestamos SET estado_prestamo = ? WHERE prestamo_id = ?");
+			conexion.setearParametros(1, "Cancelado");
+			conexion.setearParametros(2, idPrestamo);
 
-	        if (conexion.ejecutarAccion() > 0) {
-	            conexion.commit();
-	            updateExitoso = true;
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        conexion.rollback();
-	    } finally {
-	        conexion.cerrarConexion();
-	    }
-	    return updateExitoso;
+			if (conexion.ejecutarAccion() > 0) {
+				conexion.commit();
+				updateExitoso = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexion.rollback();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return updateExitoso;
 	}
-
 
 	@Override
 	public ArrayList<Prestamo> listIdPrestamosPorCliente(String dni) {
-	    ArrayList<Prestamo> listPrestamos = new ArrayList<>();
-	    Conexion conexion = new Conexion();
-	    try {
-	        conexion.setearConsulta("SELECT prestamo_id, plazo_pago FROM prestamos WHERE cliente_dni = ?");
-	        conexion.setearParametros(1, dni);
-	        ResultSet resultSet = conexion.ejecutarLectura();
+		ArrayList<Prestamo> listPrestamos = new ArrayList<>();
+		CuotaDaoImpl cuotaDao = new CuotaDaoImpl();
+		Conexion conexion = new Conexion();
+		try {
+			conexion.setearConsulta(listIdPrestamosPorCliente);
+			conexion.setearParametros(1, dni);
+			ResultSet resultSet = conexion.ejecutarLectura();
 
-	        while (resultSet.next()) {
-	            int prestamoId = resultSet.getInt("prestamo_id");
-	            int plazoPago = resultSet.getInt("plazo_pago");
+			while (resultSet.next()) {
+				int prestamoId = resultSet.getInt("prestamo_id");
+				int plazoPago = resultSet.getInt("plazo_pago");
 
-	            Prestamo prestamo = new Prestamo();
-	            prestamo.setIdPrestamo(prestamoId);
-	            prestamo.setPlazopago(plazoPago);
+				Prestamo prestamo = new Prestamo();
+				prestamo.setIdPrestamo(prestamoId);
+				prestamo.setPlazopago(plazoPago);
+				prestamo.setCuotas(cuotaDao.listPorIdPrestamo(prestamo));
 
-	            listPrestamos.add(prestamo);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        conexion.cerrarConexion();
-	    }
-	    return listPrestamos;
+				listPrestamos.add(prestamo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return listPrestamos;
 	}
-
 
 	@Override
-	public ArrayList<Prestamo> obtenerPrestamosSinDni(Date fechaInicio, Date fechaFin, String estadoPrestamo, BigDecimal importeMin, BigDecimal importeMax) {
-	    ArrayList<Prestamo> listaPrestamos = new ArrayList<>();
-	    Conexion conexion = new Conexion();
-	    try {
-	        conexion.setearConsulta("CALL obtenerPrestamosSinDni(?, ?, ?, ?, ?)");
-	        conexion.setearParametros(1, fechaInicio);
-	        conexion.setearParametros(2, fechaFin);
-	        conexion.setearParametros(3, estadoPrestamo);
-	        conexion.setearParametros(4, importeMin);
-	        conexion.setearParametros(5, importeMax);
-	        ResultSet resultSet = conexion.ejecutarLectura();
+	public ArrayList<Prestamo> obtenerPrestamosSinDni(Date fechaInicio, Date fechaFin, String estadoPrestamo,
+			BigDecimal importeMin, BigDecimal importeMax) {
+		ArrayList<Prestamo> listaPrestamos = new ArrayList<>();
+		Conexion conexion = new Conexion();
+		try {
+			conexion.setearConsulta("CALL obtenerPrestamosSinDni(?, ?, ?, ?, ?)");
+			conexion.setearParametros(1, fechaInicio);
+			conexion.setearParametros(2, fechaFin);
+			conexion.setearParametros(3, estadoPrestamo);
+			conexion.setearParametros(4, importeMin);
+			conexion.setearParametros(5, importeMax);
+			ResultSet resultSet = conexion.ejecutarLectura();
 
-	        while (resultSet.next()) {
-	        	 int idprestamo = resultSet.getInt("prestamo_id");
-	                int nroCuenta = resultSet.getInt("numero_cuenta");
-	                Date fecha = resultSet.getDate("fecha");
-	                int plazoPago = resultSet.getInt("plazo_pago");
-	                int idtipoPrestamo = resultSet.getInt("tipo_prestamo_id");
-	                Cuenta cuenta = new Cuenta();
-	                Cliente cliente = new Cliente();
-	                TipoPrestamo tipoPrestamo  = new TipoPrestamo();
-	                
-	                TipoPrestamoDaoImpl tipoPrestamoDaoImpl = new TipoPrestamoDaoImpl();
-	                tipoPrestamo = tipoPrestamoDaoImpl.get(idtipoPrestamo);
-	                
-	                CuentaDaoImpl cuentaDaoImpl = new CuentaDaoImpl();
-	                cuenta =  cuentaDaoImpl.get(nroCuenta);
-	                
-	                ClienteDaoImpl clienteDaoImpl = new ClienteDaoImpl();
-	                cliente = clienteDaoImpl.get(cuenta.getCliente().getDni());
+			while (resultSet.next()) {
+				int idprestamo = resultSet.getInt("prestamo_id");
+				int nroCuenta = resultSet.getInt("numero_cuenta");
+				Date fecha = resultSet.getDate("fecha");
+				int plazoPago = resultSet.getInt("plazo_pago");
+				int idtipoPrestamo = resultSet.getInt("tipo_prestamo_id");
+				Cuenta cuenta = new Cuenta();
+				Cliente cliente = new Cliente();
+				TipoPrestamo tipoPrestamo = new TipoPrestamo();
 
-	                Prestamo prestamo = new Prestamo(idprestamo, tipoPrestamo,fecha, cuenta,cliente, plazoPago, estadoPrestamo);
-	                listaPrestamos.add(prestamo);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        conexion.cerrarConexion();
-	    }
-	    return listaPrestamos;
+				TipoPrestamoDaoImpl tipoPrestamoDaoImpl = new TipoPrestamoDaoImpl();
+				tipoPrestamo = tipoPrestamoDaoImpl.get(idtipoPrestamo);
+
+				CuentaDaoImpl cuentaDaoImpl = new CuentaDaoImpl();
+				cuenta = cuentaDaoImpl.get(nroCuenta);
+
+				ClienteDaoImpl clienteDaoImpl = new ClienteDaoImpl();
+				cliente = clienteDaoImpl.get(cuenta.getCliente().getDni());
+
+				Prestamo prestamo = new Prestamo(idprestamo, tipoPrestamo, fecha, cuenta, cliente, plazoPago,
+						estadoPrestamo);
+				listaPrestamos.add(prestamo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return listaPrestamos;
 	}
-
 
 	@Override
 	public ArrayList<Prestamo> obtenerPrestamosPorDni(String dniCliente, Date fechaInicio, Date fechaFin,
-	                                                  String estadoPrestamo, BigDecimal importeMin, BigDecimal importeMax) {
-	    ArrayList<Prestamo> listaPrestamos = new ArrayList<>();
-	    Conexion conexion = new Conexion();
-	    
-	    try {
-	        conexion.setearConsulta("CALL obtenerPrestamos(?, ?, ?, ?, ?, ?)");
-	        conexion.setearParametros(1, dniCliente);
-	        conexion.setearParametros(2, fechaInicio);
-	        conexion.setearParametros(3, fechaFin);
-	        conexion.setearParametros(4, estadoPrestamo);
-	        conexion.setearParametros(5, importeMin);
-	        conexion.setearParametros(6, importeMax);
-	        
-	        ResultSet resultSet = conexion.ejecutarLectura();
+			String estadoPrestamo, BigDecimal importeMin, BigDecimal importeMax) {
+		ArrayList<Prestamo> listaPrestamos = new ArrayList<>();
+		Conexion conexion = new Conexion();
 
-	        // Instanciar los DAOs una sola vez fuera del bucle para optimizar el rendimiento
-	        TipoPrestamoDaoImpl tipoPrestamoDao = new TipoPrestamoDaoImpl();
-	        
+		try {
+			conexion.setearConsulta("CALL obtenerPrestamos(?, ?, ?, ?, ?, ?)");
+			conexion.setearParametros(1, dniCliente);
+			conexion.setearParametros(2, fechaInicio);
+			conexion.setearParametros(3, fechaFin);
+			conexion.setearParametros(4, estadoPrestamo);
+			conexion.setearParametros(5, importeMin);
+			conexion.setearParametros(6, importeMax);
 
-	        while (resultSet.next()) {
-	            int prestamoId = resultSet.getInt("prestamo_id");
-	            int numeroCuenta = resultSet.getInt("numero_cuenta");
-	            Date fecha = resultSet.getDate("fecha");
-	            int plazoPago = resultSet.getInt("plazo_pago");
-	            int tipoPrestamoId = resultSet.getInt("tipo_prestamo_id");
+			ResultSet resultSet = conexion.ejecutarLectura();
 
-	            Cuenta cuenta = new Cuenta();
-                Cliente cliente = new Cliente();
-                TipoPrestamo tipoPrestamo  = new TipoPrestamo();
-                
-                TipoPrestamoDaoImpl tipoPrestamoDaoImpl = new TipoPrestamoDaoImpl();
-                tipoPrestamo = tipoPrestamoDaoImpl.get(tipoPrestamoId);
-                
-              CuentaDaoImpl cuentaDaoImpl = new CuentaDaoImpl();
-               cuenta =  cuentaDaoImpl.get(numeroCuenta);
-                
-                ClienteDaoImpl clienteDaoImpl = new ClienteDaoImpl();
-              cliente = clienteDaoImpl.get(cuenta.getCliente().getDni());
+			// Instanciar los DAOs una sola vez fuera del bucle para optimizar el
+			// rendimiento
+			TipoPrestamoDaoImpl tipoPrestamoDao = new TipoPrestamoDaoImpl();
 
-                Prestamo prestamo = new Prestamo(prestamoId, tipoPrestamo,fecha, cuenta,cliente, plazoPago, estadoPrestamo);
-                listaPrestamos.add(prestamo);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        conexion.cerrarConexion();
-	    }
-	    return listaPrestamos;
+			while (resultSet.next()) {
+				int prestamoId = resultSet.getInt("prestamo_id");
+				int numeroCuenta = resultSet.getInt("numero_cuenta");
+				Date fecha = resultSet.getDate("fecha");
+				int plazoPago = resultSet.getInt("plazo_pago");
+				int tipoPrestamoId = resultSet.getInt("tipo_prestamo_id");
+
+				Cuenta cuenta = new Cuenta();
+				Cliente cliente = new Cliente();
+				TipoPrestamo tipoPrestamo = new TipoPrestamo();
+
+				TipoPrestamoDaoImpl tipoPrestamoDaoImpl = new TipoPrestamoDaoImpl();
+				tipoPrestamo = tipoPrestamoDaoImpl.get(tipoPrestamoId);
+
+				CuentaDaoImpl cuentaDaoImpl = new CuentaDaoImpl();
+				cuenta = cuentaDaoImpl.get(numeroCuenta);
+
+				ClienteDaoImpl clienteDaoImpl = new ClienteDaoImpl();
+				cliente = clienteDaoImpl.get(cuenta.getCliente().getDni());
+
+				Prestamo prestamo = new Prestamo(prestamoId, tipoPrestamo, fecha, cuenta, cliente, plazoPago,
+						estadoPrestamo);
+				listaPrestamos.add(prestamo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return listaPrestamos;
 	}
 
 }

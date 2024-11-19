@@ -10,5 +10,6 @@ public interface CuotaNegocio {
 	int update(int idCuota, String nroCuenta);
 
 	ArrayList<Cuota> listPorIdPrestamo(Prestamo prestamo);
+	
 
 }

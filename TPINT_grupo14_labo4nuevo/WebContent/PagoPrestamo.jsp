@@ -3,22 +3,23 @@
 <%@ page import="entidad.Prestamo"%>
 <%@ page import="entidad.Cuota"%>
 <%@ page import="entidad.Cuenta"%>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.ArrayList"%>
 
 <%
-    ArrayList<Prestamo> prestamos = null;
-    prestamos = (ArrayList<Prestamo>)request.getAttribute("listaPrestamos");
-    ArrayList<Cuenta> cuentasPorCliente = (ArrayList<Cuenta>) request.getAttribute("Lista_Cuentas_cliente");
-    String respuesta = null;
-    if(session != null && session.getAttribute("respuesta") != null){
-    respuesta = (String)session.getAttribute("respuesta");
-    session.removeAttribute("respuesta");
-     %>
-    <script> 
-        alert('<%= respuesta%>');
-    </script>   
-    <%
-    respuesta = null;}
+	ArrayList<Prestamo> prestamos = null;
+	prestamos = (ArrayList<Prestamo>) request.getAttribute("listaPrestamos");
+	ArrayList<Cuenta> cuentasPorCliente = (ArrayList<Cuenta>) request.getAttribute("Lista_Cuentas_cliente");
+	String respuesta = null;
+	if (session != null && session.getAttribute("respuesta") != null) {
+		respuesta = (String) session.getAttribute("respuesta");
+		session.removeAttribute("respuesta");
+%>
+<script> 
+        alert('<%=respuesta%>');
+</script>
+<%
+	respuesta = null;
+	}
 %>
 
 <!DOCTYPE html>
@@ -30,6 +31,8 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 <style>
 .bgLeft {
 	background: linear-gradient(45deg, lightgreen, limegreen, darkgreen, limegreen,
@@ -77,8 +80,7 @@
 											class="w-100 px-4 py-2 text-left focus:outline-none focus:bg-gray-200"
 											onclick="toggleSection('section<%=prestamo.getIdPrestamo()%>')">
 											Id Préstamo:
-											<%=prestamo.getIdPrestamo()
-										%>
+											<%=prestamo.getIdPrestamo()%>
 										</button>
 										<div id="section<%=prestamo.getIdPrestamo()%>"
 											class="d-none px-4 py-2">
@@ -86,7 +88,7 @@
 												<div class="container px-5 py-5 mx-auto">
 													<form id="prestamoForm"
 														class="d-flex flex-column align-items-center w-100"
-														action="ServletPagoPrestamos" method="post"
+														action="ServletPrestamosPagos" method="post"
 														onsubmit="return confirmacion();">
 														<div class="mb-4 w-100">
 															<label class="form-label" for="CuentaOrigen">Cuenta
@@ -98,18 +100,16 @@
 																		if (cuentasPorCliente != null && !cuentasPorCliente.isEmpty()) {
 																	%>
 																	<%
-																		//for (Cuenta cuenta : cuentasPorCliente) {
+																		for (Cuenta cuenta : cuentasPorCliente) {
 																	%>
-																	<option value="<% //=cuenta.getNumeroCuenta()%>">N°
-																		<%
-																		//=cuenta.getNumeroCuenta()
-																	%>
+																	<option value="<%=cuenta.getNroCuenta()%>">N°
+																		<%=cuenta.getNroCuenta()%>
 																	</option>
 																	<%
-																		//}
+																		}
 																	%>
 																	<%
-																		//} else {
+																		} else {
 																	%>
 																	<option value="">No tiene cuentas disponibles</option>
 																	<%
@@ -126,8 +126,8 @@
 															<p class="mx-auto leading-relaxed text-base">Seleccione
 																la cuota que desea pagar:</p>
 														</div>
-														<div class="w-75 mx-auto overflow-auto">
-															<table class="table table-striped">
+														<div class="w-120 mx-auto overflow-auto">
+															<table class="table table-striped table-bordered">
 																<thead>
 																	<tr>
 																		<th>ID cuota</th>
@@ -139,35 +139,36 @@
 																</thead>
 																<tbody>
 																	<%
-																		//for (Cuota cuota : prestamo.getCuotas()) {
+																		for (Cuota cuota : prestamo.getCuotas()) {
 																	%>
 																	<tr>
-																		<td>
-																			<%
-																				//=cuota.getIdcuota()
-																			%>
+																		<td class="text-center"><%=cuota.getIdcuota()%></td>
+																		<td class="text-center"><%=cuota.getNrocuota()%></td>
+																		<td class="text-center"><%=cuota.getFechavencimiento()%></td>
+																		<td class="text-center">$<%=cuota.getImporte()%>
 																		</td>
-																		<td>
-																			<%
-																				//=cuota.getNumeroCuota()
-																			%>
-																		</td>
-																		<td>
-																			<%
-																				//=cuota.getFechaVencimiento()
-																			%>
-																		</td>
-																		<td>$<%
-																			//=cuota.getImporte()
-																		%></td>
-																		<td class="text-center"><input type="hidden"
+																		
+																		<%
+																			if (cuota.getFechapago() == null) {
+																		%>
+																		<td class="w-10 text-center"><input type="hidden"
 																			name="nroCuota" id="nroCuota"
-																			value="<%//=cuota.getNumeroCuota()%>"> <input
+																			value="<%=cuota.getNrocuota()%>"> <input
 																			required name="idCuota" id="idCuota" type="radio"
-																			value="<%//=cuota.getCuotaId()%>"></td>
+																			value="<%=cuota.getIdcuota()%>"></td>
+																		<%
+																			} else {
+																		%>
+																		<td class="px-4 py-3"><i class="bi bi-check"></i></td>
+
+
+																		<%
+																			}
+																		%>
+															
 																	</tr>
 																	<%
-																		//}
+																		}
 																	%>
 																</tbody>
 															</table>
@@ -186,11 +187,11 @@
 										</div>
 									</div>
 									<%
-											}
+										}
 									%>
 								</div>
 								<%
-								 }
+									}
 								%>
 							</div>
 						</div>

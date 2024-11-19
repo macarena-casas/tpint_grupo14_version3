@@ -22,8 +22,6 @@ import negocioImpl.CuentaNegocioImpl;
 import negocioImpl.PrestamoNegocioImpl;
 import negocioImpl.TipoPrestamoNegocioImpl;
 
-
-
 @WebServlet("/ServletPrestamosAdmin")
 public class ServletPrestamosAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -48,13 +46,13 @@ public class ServletPrestamosAdmin extends HttpServlet {
         BigDecimal montoSeleccionado = new BigDecimal("500000.00");
         TipoPrestamo auxTipoPrestamo = tipoPrestamoImpl.get(cuotasSeleccionadas, montoSeleccionado);
 
-      /*request.setAttribute("Monto", auxTipoPrestamo.getImporteTotal());
+      request.setAttribute("Monto", auxTipoPrestamo.getImporteTotal());
         request.setAttribute("Cuotas", auxTipoPrestamo.getNroCuotas());
         request.setAttribute("interes", auxTipoPrestamo.getInteresAnual());
         request.setAttribute("valorCuota", auxTipoPrestamo.getCuotaMensual());
         request.setAttribute("montoFinal", auxTipoPrestamo.getImporteIntereses());
         request.setAttribute("Lista_Cuentas_cliente", cuentasPorCliente);
-     */
+     
 		if (request.getParameter("btnPrestamos") != null)
 	    {
 			
@@ -128,20 +126,15 @@ public class ServletPrestamosAdmin extends HttpServlet {
           		  "En proceso",
           		 plazoPago)
             		;
-             
+          
             boolean inserto = prestamoImpl.insert(prestamo);
 
-            if(inserto) {
-            	session.setAttribute("respuesta", "Se solicito el prestamo");
-            }
-            else {
-            	session.setAttribute("respuesta", "No se pudo solicitar el prestamo");
-            }
+			if (inserto) {
+				session.setAttribute("respuesta", "Prestamo solicitado");
+			} else {
+				session.setAttribute("respuesta", "No se pudo solicitar el prestamo");
+			}
             
-            
-           
-            
-
     		int cuotasSeleccionadas1 =12;
             BigDecimal montoSeleccionado1 = new BigDecimal("500000.00");
            TipoPrestamo auxTipoPrestamo1 = tipoPrestamoImpl.get(cuotasSeleccionadas1, montoSeleccionado1);
@@ -202,10 +195,11 @@ public class ServletPrestamosAdmin extends HttpServlet {
 		    
 	    
 	    else if(request.getParameter("btnAutorizar") != null) {
-	    	
-	    	boolean autorizo = prestamoImpl.update(Integer.parseInt((request.getParameter("numeroPrestamo"))),Integer.parseInt(request.getParameter("cuentaDestino")));
-
-            if(autorizo) {
+	    	int numeroPrestamoaux = Integer.parseInt(request.getParameter("numeroPrestamo")); 
+	    	int cuentaDestinoaux = Integer.parseInt(request.getParameter("cuentaDestino"));
+	    	boolean autorizo = prestamoImpl.update(numeroPrestamoaux,cuentaDestinoaux);
+	    	System.out.println("Autorización: " + autorizo);
+            if(autorizo==true) {
             	session.setAttribute("respuesta", "Prestamo aprobado con exito");
             }
             else {
@@ -220,14 +214,15 @@ public class ServletPrestamosAdmin extends HttpServlet {
  			dispatcher.forward(request, response);
 	    	
 	    } else if (request.getParameter("btnRechazar") != null) {
-	    	
-	    	boolean rechazado = prestamoImpl.update(Integer.parseInt((request.getParameter("numeroPrestamo"))),"Rechazado");
-	    	
+	    	int numeroPrestamoaux = Integer.parseInt(request.getParameter("numeroPrestamo")); 
+	    	boolean rechazado = prestamoImpl.update(numeroPrestamoaux ,"Rechazado");
+	    	System.out.println("Autorización: " + rechazado);
+
 	        if(rechazado) {
 	        	session.setAttribute("respuesta", "Prestamo rechazado con exito");
             }
             else {
-            	session.setAttribute("respuesta", "Error. No fue posible aprobar el prestamo");
+            	session.setAttribute("respuesta", "Error. No fue posible rechazar el prestamo");
             }
 	    	listaPrestamos = prestamoImpl.list();
 	        request.setAttribute("Lista_Prestamos", listaPrestamos);

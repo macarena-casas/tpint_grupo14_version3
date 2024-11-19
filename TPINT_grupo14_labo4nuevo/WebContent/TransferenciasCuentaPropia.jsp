@@ -63,7 +63,7 @@
 						<div class="menu-container w-100 md:w-50 lg:w-33">
 							<h2 class="text-center font-weight-bold mb-4">Transferencias</h2>
 							<form class="d-flex flex-column align-items-center w-100"
-								action="ServletTransferenciasCliente" method="post"
+								action="ServletTransferenciasClientes" method="post"
 								onsubmit="return confirmacion();">
 								<div class="form-group ancho">
 									<label for="CuentaOrigen" class="font-weight-bold">Cuenta

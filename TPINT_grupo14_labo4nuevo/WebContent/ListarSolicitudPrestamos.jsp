@@ -1,21 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="entidad.Prestamo" %>
-<%@ page import="entidad.TipoPrestamo" %>
-<%@ page import="entidad.Cliente" %>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="entidad.Prestamo"%>
+<%@ page import="entidad.TipoPrestamo"%>
+<%@ page import="entidad.Cliente"%>
 
- <%
-       String respuesta = null;
-	   if(session != null && session.getAttribute("respuesta") != null){
-	   respuesta = (String)session.getAttribute("respuesta");
-	   session.removeAttribute("respuesta");
-	   %>
-	   <script> 
-	   	 alert('<%= respuesta%>');
-	   </script>   
-	   <%
-	   respuesta = null;}
+<%
+	String respuesta = null;
+	if (session != null && session.getAttribute("respuesta") != null) {
+		respuesta = (String) session.getAttribute("respuesta");
+		session.removeAttribute("respuesta");
+%>
+<script> 
+	   	 alert('<%=respuesta%>');
+</script>
+<%
+	respuesta = null;
+	}
 %>
 
 
@@ -24,6 +25,9 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Autorización de Préstamos</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
 <link
 	href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
 	rel="stylesheet">
@@ -57,65 +61,108 @@
 						<th>Cant. Cuotas</th>
 						<th>Cuotas</th>
 						<th>Fecha</th>
+					
 						<th>Autorizar</th>
 						<th>Rechazar</th>
 					</tr>
 				</thead>
 				<tbody>
-					<% if (request.getAttribute("Lista_Prestamos") != null) {
-               ArrayList<Prestamo> listaPrestamos = (ArrayList<Prestamo>) request.getAttribute("Lista_Prestamos");
-               for (Prestamo prestamo : listaPrestamos) { %>
+					<%
+						if (request.getAttribute("Lista_Prestamos") != null) {
+							ArrayList<Prestamo> listaPrestamos = (ArrayList<Prestamo>) request.getAttribute("Lista_Prestamos");
+							for (Prestamo prestamo : listaPrestamos) {
+					%>
 					<tr>
-						<td style="text-align: center"><%= prestamo.getIdPrestamo() %></td>
-						<td style="text-align: center"><%= prestamo.getCliente().getNombre() %>
-							<%= prestamo.getCliente().getApellido() %></td>
-						<td style="text-align: center">$<%= prestamo.getTipoprestamo().getImporteTotal().toString() %></td>
-						<td style="text-align: center"><%= prestamo.getTipoprestamo().getNroCuotas() %></td>
-						<td style="text-align: center">$<%= prestamo.getTipoprestamo().getCuotaMensual().toString() %></td>
-						<td style="text-align: center"><%= prestamo.getFecha().toString() %></td>
+						<td style="text-align: center"><%=prestamo.getIdPrestamo()%></td>
+						<td style="text-align: center"><%=prestamo.getCliente().getNombre()%>
+							<%=prestamo.getCliente().getApellido()%></td>
+						<td style="text-align: center">$<%=prestamo.getTipoprestamo().getImporteTotal().toString()%></td>
+						<td style="text-align: center"><%=prestamo.getTipoprestamo().getNroCuotas()%></td>
+						<td style="text-align: center">$<%=prestamo.getTipoprestamo().getCuotaMensual().toString()%></td>
+						<td style="text-align: center"><%=prestamo.getFecha().toString()%></td>
+				
+			
 						<td style="text-align: center">
 							<form action="ServletPrestamosAdmin" method="post"
 								onsubmit="return confirmacion('autorizar');">
-								<input type="hidden" name="numeroPrestamo"
-									value="<%= prestamo.getIdPrestamo() %>"> <input
-									type="hidden" name="cuentaDestino"
-									value="<%= prestamo.getCuenta().getNroCuenta() %>">
+								 <input type="hidden" id="numeroPrestamo" name="numeroPrestamo" value=<%=prestamo.getIdPrestamo() %>>
+								 <input type="hidden" id="cuentaDestino" name="cuentaDestino" value= <%=prestamo.getCuenta().getNroCuenta() %>>
 								<button type="submit" name="btnAutorizar"
-									class="flex mx-auto mt-6 text-black bg-purple-500 border-0 py-2 px-5 focus:outline-none hover:bg-purple-600 rounded btn btn-success">Autorizar</button>
+									class="btn btn-outline-success text-green  rounded ">
+									<i class="bi bi-check2-circle"></i>
+								</button>
 							</form>
 						</td>
 						<td>
 							<form action="ServletPrestamosAdmin" method="post"
 								onsubmit="return confirmacion('rechazar');">
 								<input type="hidden" name="numeroPrestamo"
-									value="<%= prestamo.getIdPrestamo() %>">
+									value="<%=prestamo.getIdPrestamo()%>">
 								<button type="submit" name="btnRechazar"
-									class="flex mx-auto mt-6 text-white bg-red-500 border-0 py-2 px-5 focus:outline-none hover:bg-red-600 rounded">Rechazar</button>
+									class="btn btn-outline-danger text-red rounded">
+									<i class="bi bi-x-octagon"></i>
+								</button>
 							</form>
 						</td>
 					</tr>
 
-					<% 
-					}  
-             } else {
-            	 %>
-            
+					<%
+						}
+						} else {
+					%>
+
 					<tr>
 						<td colspan="9" style="text-align: center">No hay solicitudes
 							de préstamos disponibles</td>
 					</tr>
- <%   } %>
+					<%
+						}
+					%>
 				</tbody>
 			</table>
 			<br>
-			<div class="flex justify-end w-full mt-4">
-				<a href="MenuAdmin.jsp"
-					class="text-white bg-purple-500 border-0 py-2 px-8 focus:outline-none hover:bg-purple-600 rounded text-lg btn btn-success">Volver
-					al menú</a>
+			<div class="d-flex justify-content-end w-100 mt-4">
+				<a href="MenuAdmin.jsp" class="btn btn-outline-success text-dark "><strong>
+						Volver al menú</strong> </a>
 			</div>
 		</div>
 
-
+	<script>
+	$(document).ready(function() {
+		$('#tablaClientes').DataTable({
+			"paging" : true,
+			"lengthChange" : true,
+			"searching" : true,
+			"ordering" : true,
+			"info" : true,
+			"autoWidth" : false,
+			"responsive" : true,
+			"language" : {
+				"paginate" : {
+					"first" : "Primero",
+					"last" : "Último",
+					"next" : "Siguiente",
+					"previous" : "Anterior"
+				},
+				"lengthMenu" : "Mostrar _MENU_ registros por página",
+				"zeroRecords" : "No se encontraron resultados",
+				"info" : "Mostrando página _PAGE_ de _PAGES_",
+				"infoEmpty" : "No hay registros disponibles",
+				"infoFiltered" : "(filtrado de _MAX_ registros totales)"
+			}
+		});
+	});
+	   function confirmacion(text) {  
+	        return confirm('¿Esta seguro que desea ' + text + ' el préstamo?'); 
+	        if (confirmacion) {
+	            return true; 
+	        } else {
+	            return false; 
+	        }
+	    }
+	</script>
+	
+	</div>
 	</div>
 
 
@@ -123,4 +170,3 @@
 
 </body>
 </html>
-
