@@ -54,7 +54,7 @@ public class CuotaDaoImpl implements CuotaDao {
 	
 	public int update(int idCuota, String nroCuenta) {
 	    int resultado = 0;
-	    Conexion conexion = new Conexion(); // Asegúrate de tener una clase Conexion que maneje la conexión a la base de datos
+	    Conexion conexion = new Conexion(); 
 	    String call = "{CALL SP_PAGO_CUOTA(?, ?)}";
 
 	    try {
@@ -80,30 +80,6 @@ public class CuotaDaoImpl implements CuotaDao {
 	    return resultado;
 	}
 
-	
-	
-	/*
-	@Override
-	public int update(int idCuota, String nroCuenta) {
-
-		boolean exitoso = false;
-		try {
-			conexion.setearConsulta(call);
-			conexion.setearParametros(1, idCuota);
-			conexion.setearParametros(2, nroCuenta);
-
-			if (conexion.ejecutarAccion() > 0) {
-				conexion.commit();
-				exitoso = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			conexion.rollback();
-		} finally {
-			conexion.cerrarConexion();
-		}
-		return exitoso;
-	}*/
 	
 
 }

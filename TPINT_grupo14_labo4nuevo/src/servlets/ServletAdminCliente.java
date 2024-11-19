@@ -2,15 +2,11 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import daoImpl.ClienteDaoImpl;
-import daoImpl.Conexion;
 import negocioImpl.ClienteNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
 import negocioImpl.LocalidadNegocioImpl;

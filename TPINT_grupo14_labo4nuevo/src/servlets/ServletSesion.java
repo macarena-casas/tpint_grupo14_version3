@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import daoImpl.Conexion;
 import entidad.Cliente;
-import entidad.Usuario;
+
 import negocioImpl.ClienteNegocioImpl;
 import negocioImpl.CuentaNegocioImpl;
 import negocioImpl.UsuarioNegocioImpl;
@@ -21,6 +21,7 @@ import negocioImpl.UsuarioNegocioImpl;
 public class ServletSesion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ClienteNegocioImpl clienteNegocioImpl = new ClienteNegocioImpl();
+	private CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
 
 	public ServletSesion() {
 		super();
@@ -47,8 +48,7 @@ public class ServletSesion extends HttpServlet {
 			dispatcher.forward(request, response);
 
 		} else {
-			UsuarioNegocioImpl usuarioNegocioImpl = new UsuarioNegocioImpl();
-
+		
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 
@@ -81,14 +81,13 @@ public class ServletSesion extends HttpServlet {
 						session.setAttribute("cliente", auxCliente);
 						session.setAttribute("tipoUsuario", "cliente");
 
-						CuentaNegocioImpl cuentaNegocio = new CuentaNegocioImpl();
 						int cantCuentas = cuentaNegocio.listCuentasPorCliente(auxCliente.getDni()).size();
 						session.setAttribute("cantCuentas", cantCuentas);
 
 						RequestDispatcher dispatcher = request.getRequestDispatcher("/MenuCliente.jsp");
 						dispatcher.forward(request, response);
 					}
-					// response.sendRedirect("Home.jsp");
+		
 
 				}
 
@@ -107,3 +106,4 @@ public class ServletSesion extends HttpServlet {
 	}
 
 }
+

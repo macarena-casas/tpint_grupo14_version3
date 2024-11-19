@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.CuentaDao;
-import daoImpl.CuentaDaoImpl;
 import entidad.Cuenta;
 import negocioImpl.ClienteNegocioImpl;
 import negocioImpl.CuentaNegocioImpl;
@@ -33,45 +31,19 @@ public class ServletAdminCuentas extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getParameter("btnAdminCuentas") != null) {
-			CuentaNegocioImpl cuentaNegocioimpl = new CuentaNegocioImpl();
+
 			listaCuentas = cuentaNegocioImpl.list();
-			request.setAttribute("listaCuentas", cuentaNegocioimpl.list());
+			request.setAttribute("listaCuentas", listaCuentas);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarCuentas.jsp");
 			dispatcher.forward(request, response);
 		} else if (request.getParameter("btnEliminar") != null) {
 			int nrodecuenta = Integer.parseInt(request.getParameter("cuentaId").toString());
-			CuentaNegocioImpl cuentaNegocioimpl = new CuentaNegocioImpl();
-			if (cuentaNegocioimpl.delete(nrodecuenta)) {
-				request.setAttribute("listaCuentas", cuentaNegocioimpl.list());
+
+			if (cuentaNegocioImpl.delete(nrodecuenta)) {
+				request.setAttribute("listaCuentas", cuentaNegocioImpl.list());
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarCuentas.jsp");
 				dispatcher.forward(request, response);
 			}
-		} else if (request.getParameter("btnDetalle") != null) {
-			String nroCuentaStr = request.getParameter("cuentaId");
-			int nroCuenta = Integer.parseInt(nroCuentaStr);
-
-			CuentaDao cuentaDao = new CuentaDaoImpl();
-			Cuenta cuenta = cuentaDao.get(nroCuenta); // para obtener la cta usando el nro de cta
-
-			// verificamos
-			if (cuenta != null) {
-				// dato cliente
-				request.setAttribute("nombreCliente", cuenta.getCliente().getNombre());
-				request.setAttribute("apellidoCliente", cuenta.getCliente().getApellido());
-				// dato cta
-				request.setAttribute("numerodecuenta", cuenta.getNroCuenta());
-				request.setAttribute("tipoDeCuenta", cuenta.getTipoCuenta());
-				request.setAttribute("fechaCreacion", cuenta.getFechaCreacion());
-				request.setAttribute("cbu", cuenta.getCbu());
-				request.setAttribute("saldo", cuenta.getSaldo());
-
-			} else {
-				request.setAttribute("error", "No se encontró la cuenta seleccionada.");
-			}
-
-			// volvemos a la pag detalle
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/DetalleCuenta.jsp");
-			dispatcher.forward(request, response);
 		}
 		if (request.getParameter("btnModificar") != null) {
 			// captura el numero de cuenta
