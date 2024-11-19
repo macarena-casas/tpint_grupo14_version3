@@ -44,8 +44,34 @@ public class ServletAdminCuentas extends HttpServlet {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarCuentas.jsp");
 				dispatcher.forward(request, response);
 			}
+		} else if (request.getParameter("btnDetalle") != null) {
+			String nroCuentaStr = request.getParameter("cuentaId");
+			int nroCuenta = Integer.parseInt(nroCuentaStr);
+
+			Cuenta cuenta = cuentaNegocioImpl.get(nroCuenta); // para obtener la cta usando el nro de cta
+
+			// verificamos
+			if (cuenta != null) {
+				// dato cliente
+				request.setAttribute("nombreCliente", cuenta.getCliente().getNombre());
+				request.setAttribute("apellidoCliente", cuenta.getCliente().getApellido());
+
+				// dato cta
+				request.setAttribute("numerodecuenta", cuenta.getNroCuenta());
+				request.setAttribute("tipoDeCuenta", cuenta.getTipoCuenta());
+				request.setAttribute("fechaCreacion", cuenta.getFechaCreacion());
+				request.setAttribute("cbu", cuenta.getCbu());
+				request.setAttribute("saldo", cuenta.getSaldo());
+			} else {
+				request.setAttribute("error", "No se encontró la cuenta seleccionada.");
+			}
+
+			// volvemos a la pag detalle
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/DetalleCuenta.jsp");
+			dispatcher.forward(request, response);
 		}
-		if (request.getParameter("btnModificar") != null) {
+
+		else if (request.getParameter("btnModificar") != null) {
 			// captura el numero de cuenta
 			String auxNro = request.getParameter("cuentaId");
 			int nroCuenta = Integer.parseInt(auxNro);
