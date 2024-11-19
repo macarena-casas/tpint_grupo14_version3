@@ -43,24 +43,23 @@ public class ServletCliente extends HttpServlet {
 			cargarCuentas(request, clientePerfil);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/PerfilCliente.jsp");
 			dispatcher.forward(request, response);
+			
 		} else if (request.getParameter("btnCuentas") != null) {
-			
 			int userId = (int) session.getAttribute("userId");
-			
 			List<Cuenta> listacuenta = new ArrayList<Cuenta>();
 			listacuenta = cuentaNegocioImpl.listCuentasPorCliente(clientenegocioimpl.getPorIdUsuario(userId).getDni());
-
 			request.setAttribute("listadeCuentas", listacuenta);
 			request.getRequestDispatcher("/CuentasClientes.jsp").forward(request, response);
-
-		} 
-
-     
-
+			
+		} else if (request.getParameter("btnMovimientosCuenta") != null) {
+			int nroCuenta = Integer.parseInt(request.getParameter("btnMovimientosCuenta"));
+			ArrayList<Movimiento> movimientos = movimientosNegocioImpl.listPorNumeroCuenta(nroCuenta);
+			request.setAttribute("movimientos", movimientos);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarMovimientos.jsp");
+			dispatcher.forward(request, response);
+		}
 		String dni = request.getParameter("dni"); // Obtener DNI de los parámetros de la URL
-
 		// Lógica para obtener los datos del cliente usando el DNI
-
 		Cliente cliente = clientenegocioimpl.get(dni); // Ejemplo de método que obtiene el cliente
 		// Guardar los datos en la solicitud (request)
 		request.setAttribute("nombreCliente", cliente.getNombre());
@@ -75,7 +74,6 @@ public class ServletCliente extends HttpServlet {
 		request.setAttribute("telefono", cliente.getTelefono());
 		request.setAttribute("usuario", cliente.getUsuario().getNombreusuario());
 		request.setAttribute("contra", cliente.getUsuario().getContraseña());
-
 		// Redirigir a la página JSP
 		request.getRequestDispatcher("/DetalleCliente.jsp").forward(request, response);
 	}
@@ -84,6 +82,7 @@ public class ServletCliente extends HttpServlet {
 		cuentasPorCliente = cuentaNegocioImpl.listCuentasPorCliente(cliente.getDni());
 		request.setAttribute("Lista_Cuentas_cliente", cuentasPorCliente);
 	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);

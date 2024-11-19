@@ -100,7 +100,7 @@
 %>
 <jsp:include page="NavBar.jsp" />
     <h1>Cuentas</h1>
-    <div class="container">
+    <form class="container" action= "ServletCliente" method="get">
     <% 
     	for(Cuenta objCuenta: listacuenta){
     		
@@ -112,11 +112,11 @@
             <h3>CBU: <%=objCuenta.getCbu() %> </h3>
             <p><strong>Tipo de Cuenta:</strong> <%=objCuenta.getTipoCuenta() %> </p>
             <p><strong>Saldo:</strong> $<%=objCuenta.getSaldo() %> </p>
-            <button onclick="window.location.href='ListarMovimientos.jsp?cuenta=1';">Movimientos</button>
+            <button name="btnMovimientosCuenta" value=<%=objCuenta.getNroCuenta() %> >Movimientos</button>
         </div>
 <%} %>
 
-    </div>
+    </form>
 
     <a href="MenuCliente.jsp" class="back-button">Volver al menu</a>
   

@@ -6,6 +6,6 @@ import entidad.Movimiento;
 
 public interface MovimientosNegocio {
 
-	public ArrayList<Movimiento> listByNumeroCuenta(int numero_cuenta);
+	public ArrayList<Movimiento> listPorNumeroCuenta(int numero_cuenta);
 	
 }
