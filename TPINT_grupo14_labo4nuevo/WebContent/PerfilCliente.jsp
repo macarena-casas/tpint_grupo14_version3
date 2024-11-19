@@ -190,6 +190,12 @@ h2 {
 					readonly>
 			</div>
 		</div>
+		<br>
+		<div class="d-flex justify-content-end w-100 mt-4">
+						<a href="MenuCliente.jsp"
+							class="btn btn-outline-success text-dark "><strong>
+								Volver al menú</strong> </a>
+					</div>
 	</div>
 
 	<jsp:include page="Footer.jsp" />
