@@ -198,7 +198,7 @@ public class ServletPrestamosAdmin extends HttpServlet {
 	    	int numeroPrestamoaux = Integer.parseInt(request.getParameter("numeroPrestamo")); 
 	    	int cuentaDestinoaux = Integer.parseInt(request.getParameter("cuentaDestino"));
 	    	boolean autorizo = prestamoImpl.update(numeroPrestamoaux,cuentaDestinoaux);
-	    	System.out.println("Autorización: " + autorizo);
+	    	
             if(autorizo==true) {
             	session.setAttribute("respuesta", "Prestamo aprobado con exito");
             }
@@ -216,7 +216,7 @@ public class ServletPrestamosAdmin extends HttpServlet {
 	    } else if (request.getParameter("btnRechazar") != null) {
 	    	int numeroPrestamoaux = Integer.parseInt(request.getParameter("numeroPrestamo")); 
 	    	boolean rechazado = prestamoImpl.update(numeroPrestamoaux ,"Rechazado");
-	    	System.out.println("Autorización: " + rechazado);
+	    	
 
 	        if(rechazado) {
 	        	session.setAttribute("respuesta", "Prestamo rechazado con exito");
