@@ -111,6 +111,7 @@ public class Conexion {
         int filasAfectadas = 0;
         try {
             filasAfectadas = comando.executeUpdate();
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw ex;
@@ -121,6 +122,7 @@ public class Conexion {
     private void abrirConexion() {
         try {
             conexion = DriverManager.getConnection(url, user, password);
+            conexion.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
         }
