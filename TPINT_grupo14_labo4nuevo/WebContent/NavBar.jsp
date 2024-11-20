@@ -2,13 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%
 	String usuario = null;
-    Integer tipoUsuario = null; // Se declara tipoUsuario como Integer
+	Integer tipoUsuario = null; // Se declara tipoUsuario como Integer
 	if (session != null) {
-		Object userIdObj = session.getAttribute("userId");
+		Object userIdObj = session.getAttribute("usuario");
 		if (userIdObj != null) {
 			usuario = userIdObj.toString();
 		}
-		
+
 		tipoUsuario = (Integer) session.getAttribute("tipo_usuario_id"); // Retenido como Integer
 	}
 %>
@@ -55,17 +55,21 @@
 				class="ml-3 text-black h3"><strong>Emerald-Bank</strong></span>
 			</a>
 			<div class="flex-lg-grow-1 d-flex justify-content-end ml-3 ml-lg-0">
-				    <% 
-                    if (usuario == null) {                  
-                %>
-                    <a href="Login.jsp" class="btn btn-outline-success border-0 py-1 px-3 hover:bg-green rounded text-base mt-3 mt-md-0"><strong>Log in</strong></a>
-                <% 
-                    } else {  
-                %>
-                    <a href="Home.jsp" class="btn btn-outline-success border-0 py-1 px-3 hover:bg-green rounded text-base mt-3 mt-md-0"><strong>Home</strong></a>
-                <% 
-                    }
-                %>
+				<%
+					if (usuario == null) {
+				%>
+				<a href="Login.jsp"
+					class="btn btn-outline-success border-0 py-1 px-3 hover:bg-green rounded text-base mt-3 mt-md-0"><strong>Log
+						in</strong></a>
+				<%
+					} else {
+				%>
+
+				<a href="Home.jsp"
+					class="btn btn-outline-success border-0 py-1 px-3 hover:bg-green rounded text-base mt-3 mt-md-0"><strong><%=usuario%></strong></a>
+				<%
+					}
+				%>
 			</div>
 
 			<!-- Menú desplegable -->
@@ -84,15 +88,16 @@
 						<a href="Home.jsp" class="dropdown-item text-dark">Inicio</a>
 
 						<%
-						if (tipoUsuario != null && tipoUsuario == 1) {
+							if (tipoUsuario != null && tipoUsuario == 1) {
 						%>
 						<!-- Si es admin -->
 
 						<a href="MenuAdmin.jsp"
 							class="dropdown-item border-bottom border-success text-dark">Menú</a>
-							<form action="ServletCliente" method="post">
-							<button type="submit" value="true" class="dropdown-item text-dark">Ver detalle de cuenta</button>
-							</form>
+						<form action="ServletCliente" method="post">
+							<button type="submit" value="true"
+								class="dropdown-item text-dark">Ver detalle de cuenta</button>
+						</form>
 						<a href="ServletAdminCliente?btnAgregarCliente"
 							class="dropdown-item text-dark">Agregar Cliente</a> <a
 							href="ServletAdminCliente?btnAdminClientes"
@@ -108,16 +113,16 @@
 
 
 						<%
-							}
-						else if (tipoUsuario != null && tipoUsuario == 2) {
+							} else if (tipoUsuario != null && tipoUsuario == 2) {
 						%>
 						<!-- Si es cliente -->
 
 						<a href="MenuCliente.jsp"
 							class="dropdown-item border-bottom border-success text-dark">Menú</a>
-							<form action="ServletCliente" method="post">
-							<button type="submit" value="true" class="dropdown-item text-dark">Ver detalle de cuenta</button>
-							</form>
+						<form action="ServletCliente" method="post">
+							<button type="submit" value="true"
+								class="dropdown-item text-dark">Ver detalle de cuenta</button>
+						</form>
 						<a href="ServletCliente?btnPerfil" class="dropdown-item text-dark">Perfil</a>
 						<a href="ServletCliente?btnCuentas"
 							class="dropdown-item text-dark">Cuentas</a> <a

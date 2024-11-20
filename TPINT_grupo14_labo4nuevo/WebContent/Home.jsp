@@ -94,7 +94,7 @@
         <p>Tu socio financiero de confianza.</p>
         
         <% 
-            Integer userId = (Integer) session.getAttribute("userId");
+            String userId = (String) session.getAttribute("usuario");
             if (userId != null) { 
         %>
             <p>ID de Usuario: <strong><%= userId %></strong></p>
