@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="entidad.Cuenta" %>
-<%@ page import="java.text.DecimalFormat" %>
-<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="entidad.Cuenta"%>
+<%@ page import="java.text.DecimalFormat"%>
+<%@ page import="javax.servlet.http.HttpSession"%>
 
-<%     
-Cuenta auxCuenta = new Cuenta(); 
-          auxCuenta = (Cuenta) request.getAttribute("cuenta");
-          DecimalFormat formato = new DecimalFormat("#0.0");
-          String saldoFormateado = formato.format(auxCuenta.getSaldo());
-
+<%
+	Cuenta auxCuenta = new Cuenta();
+	auxCuenta = (Cuenta) request.getAttribute("cuenta");
+	DecimalFormat formato = new DecimalFormat("#0.0");
+	String saldoFormateado = formato.format(auxCuenta.getSaldo());
 %>
 
 <!DOCTYPE html>
@@ -41,18 +41,20 @@ Cuenta auxCuenta = new Cuenta();
 	<title>Modificar Cuenta</title>
 
 	<jsp:include page="NavBar.jsp" />
-        <%   
-	  String respuesta = null;
-	    if(session != null && session.getAttribute("respuesta") != null){
-	    respuesta = (String)session.getAttribute("respuesta");
-	    session.removeAttribute("respuesta");
-	     %>
-	    <script> 
-	        alert('<%= respuesta%>');
-	    </script>   
-	    <%
-	    respuesta = null;}
-    %>
+	<%
+		String respuesta = null;
+		if (session != null && session.getAttribute("respuesta") != null) {
+			respuesta = (String) session.getAttribute("respuesta");
+			session.removeAttribute("respuesta");
+	%>
+	<script> 
+	        alert('<%=respuesta%>
+		');
+	</script>
+	<%
+		respuesta = null;
+		}
+	%>
 	<div class="d-flex">
 		<div class="w-10 bgLeft pt-5"></div>
 		<div class="w-90 p-4 bg-white bg-opacity-80 pt-5">
@@ -63,7 +65,8 @@ Cuenta auxCuenta = new Cuenta();
 							Cuenta</h2>
 					</center>
 					<br>
-					<form action="ServletAdminCuentas" method="post" onsubmit="return validarFormulario();">
+					<form action="ServletAdminCuentas" method="post"
+						onsubmit="return validarFormulario();">
 						<div class="row">
 
 							<div class="col-md-6 mb-4">
@@ -91,8 +94,9 @@ Cuenta auxCuenta = new Cuenta();
 							</div>
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="cuil">CUIL:</label> <input
-									type="number" id="cuil" name="cuil" value="<%=auxCuenta.getCliente().getCuil()%>"  class="form-control"
-									maxlength="13" readonly>
+									type="number" id="cuil" name="cuil"
+									value="<%=auxCuenta.getCliente().getCuil()%>"
+									class="form-control" maxlength="13" readonly>
 							</div>
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="tipoCuenta">Tipo de
@@ -119,13 +123,20 @@ Cuenta auxCuenta = new Cuenta();
 							</div>
 
 						</div>
-				
+
 						<center>
 							<button type="submit" id="btnModificarCuenta"
 								name="btnModificarCuenta" value="ModificarCuenta"
 								class="btn btn-outline-success ">Modificar Cuenta</button>
 						</center>
 					</form>
+					<div class="d-flex justify-content-end w-100 mt-4">
+						<form action="ServletAdminCuentas" method="get">
+
+							<button type="submit" name="btnAtras2" value="Atras"
+								class="btn btn-outline-success text-dark">Atrás</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

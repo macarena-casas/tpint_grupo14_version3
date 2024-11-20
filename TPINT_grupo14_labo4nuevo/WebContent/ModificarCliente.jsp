@@ -7,10 +7,10 @@
 <%@ page import="entidad.Pais"%>
 
 <%
-Cliente auxCliente =  (Cliente) request.getAttribute("ClienteDetalle");
-ArrayList<Localidad> localidades =(ArrayList<Localidad>) request.getAttribute("Lista_Localidades");
-ArrayList<Provincia> provincias =  (ArrayList<Provincia>) request.getAttribute("Lista_Provincias");
-ArrayList<Pais> paises = (ArrayList<Pais>) request.getAttribute("Lista_Paises");
+	Cliente auxCliente = (Cliente) request.getAttribute("ClienteDetalle");
+	ArrayList<Localidad> localidades = (ArrayList<Localidad>) request.getAttribute("Lista_Localidades");
+	ArrayList<Provincia> provincias = (ArrayList<Provincia>) request.getAttribute("Lista_Provincias");
+	ArrayList<Pais> paises = (ArrayList<Pais>) request.getAttribute("Lista_Paises");
 
 	String respuesta = null;
 	if (session != null && session.getAttribute("respuesta") != null) {
@@ -160,8 +160,8 @@ ArrayList<Pais> paises = (ArrayList<Pais>) request.getAttribute("Lista_Paises");
 							</div>
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="dni">DNI:</label> <input
-									type="number" id="dni" name="dni"
-									class="form-control"  value="<%=auxCliente.getDni() %>" readonly>
+									type="number" id="dni" name="dni" class="form-control"
+									value="<%=auxCliente.getDni()%>" readonly>
 							</div>
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="cuil">CUIL:</label> <input
@@ -185,10 +185,10 @@ ArrayList<Pais> paises = (ArrayList<Pais>) request.getAttribute("Lista_Paises");
 							</div>
 
 							<div class="col-md-6 mb-4">
-								<label class="form-label" for="nacionalidad1">Nacionalidad:</label> <input
-								type="text" id="nacionalidad1" maxlength="100" name="nacionalidad1"
-									value="<%=auxCliente.getNacionalidad()%>" class="form-control"
-								 readonly>
+								<label class="form-label" for="nacionalidad1">Nacionalidad:</label>
+								<input type="text" id="nacionalidad1" maxlength="100"
+									name="nacionalidad1" value="<%=auxCliente.getNacionalidad()%>"
+									class="form-control" readonly>
 
 							</div>
 
@@ -311,17 +311,20 @@ ArrayList<Pais> paises = (ArrayList<Pais>) request.getAttribute("Lista_Paises");
 						class="btn btn-outline-success ">Modificar</button>
 				</center>
 				</form>
-				<div class="flex justify-end w-full mt-4">
-					<a href="MenuAdmin.jsp"
-						class="text-white bg-purple-500 border-0 py-2 px-8 focus:outline-none hover:bg-purple-600 rounded text-lg btn btn-success">Volver
-						al menú</a>
+				<div class="d-flex justify-content-end w-100 mt-4">
+					<form action="ServletAdminCliente" method="get">
+
+						<button type="submit" name="btnAtras1" value="Atras"
+							class="btn btn-outline-success text-dark">Atrás</button>
+					</form>
 				</div>
 				<%
 					String message = (String) request.getAttribute("message");
 					if (message != null) {
 				%>
 				<script>
-                            alert('<%=message%>');
+                            alert('<%=message%>
+					');
 				</script>
 				<%
 					}

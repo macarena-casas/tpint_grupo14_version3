@@ -110,9 +110,11 @@
 				</tbody>
 			</table>
 			<br>
-			<div class="d-flex justify-content-end w-100 mt-4">
-				<a href="MenuAdmin.jsp" class="btn btn-success">Volver al menú</a>
-			</div>
+		<div class="d-flex justify-content-end w-100 mt-4">
+						<a href="MenuAdmin.jsp"
+							class="btn btn-outline-success text-dark "><strong>
+								Volver al menú</strong> </a>
+					</div>
 		</div>
 	</div>
 	<jsp:include page="Footer.jsp" />

@@ -127,6 +127,12 @@
 			</div>
 		</div>
 
+	
+	</div>
+	</div>
+
+
+	<jsp:include page="Footer.jsp" />
 	<script>
 	$(document).ready(function() {
 		$('#tablaClientes').DataTable({
@@ -161,12 +167,6 @@
 	        }
 	    }
 	</script>
-	
-	</div>
-	</div>
-
-
-	<jsp:include page="Footer.jsp" />
 
 </body>
 </html>

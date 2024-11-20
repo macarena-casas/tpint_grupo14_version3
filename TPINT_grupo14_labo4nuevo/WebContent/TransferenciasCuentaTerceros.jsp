@@ -106,7 +106,7 @@
 								</div>
 								<div class="form-group ancho">
 									<label for="importe" class="font-weight-bold">Importe:</label>
-									<input required type="number" max="9999999999" step="any"
+									<input required type="number" max="99999999" step="any"
 										min="1" id="importe" name="importe" class="form-control">
 								</div>
 								<div class="d-flex flex-column align-items-center w-100">

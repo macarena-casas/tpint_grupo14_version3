@@ -30,7 +30,7 @@ public class ServletAdminCuentas extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getParameter("btnAdminCuentas") != null) {
+		if (request.getParameter("btnAdminCuentas") != null || request.getParameter("btnAtras2") != null) {
 
 			listaCuentas = cuentaNegocioImpl.list();
 			request.setAttribute("listaCuentas", listaCuentas);

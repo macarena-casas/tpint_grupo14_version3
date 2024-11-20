@@ -1,45 +1,52 @@
 package daoImpl;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.sun.jmx.snmp.Timestamp;
+import java.math.BigDecimal;
+import java.sql.SQLException;
 
 import dao.TransferenciaDao;
-import entidad.Transferencia;
 
 public class TransferenciaDaoImpl implements TransferenciaDao {
 
+	private static final String call = "call SP_TRANSFERENCIAS (?,?,?,?)";
 	private Conexion conexion;
 
 	public TransferenciaDaoImpl() {
 		this.conexion = new Conexion();
 	}
-	@Override
-	public List<Transferencia> getTodasMisTransferencias(String cbu) {
-		List<Transferencia> listaTransf = new ArrayList<Transferencia>();
-		String consulta = "select * from transferencias where cbu_origen='"+ cbu +"' or cbu_destino= '"+cbu+"'"; 
-		try {
-			conexion.setearConsulta(consulta);
-			ResultSet rs = conexion.ejecutarLectura();
-			while (rs.next()) {
-				Transferencia transferencia = new Transferencia();
-				transferencia.setCbuDestino(rs.getString("cbu_destino"));
-				java.sql.Timestamp timestamp = rs.getTimestamp("fecha");
-				Date fechatransf = new Date(timestamp.getTime());
-				transferencia.setFecha(fechatransf);
-				transferencia.setCbuOrigen(rs.getString("cbu_origen"));
-				
-				
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		return null;
-	}
-	
 
+	@Override
+	public int insert(String cbuOrigen, String cbuDestino, String detalle, BigDecimal importe) {
+
+		int filasafectadas = 0;
+
+		try {
+			conexion.setearConsulta(call);
+			conexion.setearParametros(1, cbuOrigen);
+			conexion.setearParametros(2, cbuDestino);
+			conexion.setearParametros(3, importe);
+			conexion.setearParametros(4, detalle);
+ 
+			filasafectadas=conexion.ejecutarAccion();
+			
+			System.out.println("Filas afectadas: " + filasafectadas);
+			
+			
+			/*if (conexion.ejecutarAccion() > 0) {
+				conexion.commit();
+				filasafectadas = 0; // Operación exitosa
+			}*/
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+			if (e.getSQLState().equals("45000")) {
+				filasafectadas = 45000; // Saldo insuficiente
+			}
+			conexion.rollback();
+
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return filasafectadas;
+
+	}
 }

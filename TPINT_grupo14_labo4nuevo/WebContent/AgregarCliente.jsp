@@ -183,9 +183,10 @@
 
 							</div>
 
-							<div class="col-md-6 mb-4">								
-									<label class="form-label" for="nacionalidad1">Nacionalidad:</label> <select
-									id="nacionalidad1" name="nacionalidad1" class="form-control" required>
+							<div class="col-md-6 mb-4">
+								<label class="form-label" for="nacionalidad1">Nacionalidad:</label>
+								<select id="nacionalidad1" name="nacionalidad1"
+									class="form-control" required>
 
 									<div
 										class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -311,17 +312,17 @@
 						class="btn btn-outline-success ">Agregar</button>
 				</center>
 				</form>
-				<div class="flex justify-end w-full mt-4">
-					<a href="MenuAdmin.jsp"
-						class="text-white bg-purple-500 border-0 py-2 px-8 focus:outline-none hover:bg-purple-600 rounded text-lg btn btn-success">Volver
-						al menú</a>
+				<div class="d-flex justify-content-end w-100 mt-4">
+					<a href="MenuAdmin.jsp" class="btn btn-outline-success text-dark "><strong>
+							Volver al menú</strong> </a>
 				</div>
 				<%
 					String message = (String) request.getAttribute("message");
 					if (message != null) {
 				%>
 				<script>
-                            alert('<%=message%>');
+                            alert('<%=message%>
+					');
 				</script>
 				<%
 					}

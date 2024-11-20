@@ -66,7 +66,7 @@ public class ServletAdminCliente extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/AgregarCliente.jsp");
             dispatcher.forward(request, response);
             
-        }else if (request.getParameter("btnAdminClientes") != null) {
+        }else if (request.getParameter("btnAdminClientes") != null || request.getParameter("btnAtras1") != null) {
 			listaClientes1 = clienteNegocioImpl.list();
             request.setAttribute("Lista_Clientes", listaClientes1);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/ListarClientes.jsp");

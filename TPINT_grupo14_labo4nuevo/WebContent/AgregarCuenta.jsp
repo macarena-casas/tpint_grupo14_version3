@@ -50,9 +50,9 @@
 								</div>
 							</center>
 							<div class="col-md-6 mb-4">
-								<label class="form-label" for="nombre">Numero de cuenta:</label> <input
-									type="text" id="nroCuenta" name="nroCuenta" maxlength="100"
-									class="form-control" required>
+								<label class="form-label" for="nombre">Numero de cuenta:</label>
+								<input type="text" id="nroCuenta" name="nroCuenta"
+									maxlength="100" class="form-control" required>
 							</div>
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="nombre">Nombre:</label> <input
@@ -92,17 +92,21 @@
 									class="form-control" required>
 							</div>
 						</div>
-						
-				
-			
-				<center>
-					<button type="submit" id="btnAgregarCuentaNueva"
-						name="btnAgregarCuentaNueva" value="AgregarCuentaNueva"
-						class="btn btn-outline-success ">Agregar Cuenta</button>
-				</center>
-				</form>
+
+
+
+						<center>
+							<button type="submit" id="btnAgregarCuentaNueva"
+								name="btnAgregarCuentaNueva" value="AgregarCuentaNueva"
+								class="btn btn-outline-success ">Agregar Cuenta</button>
+						</center>
+					</form>
+					<div class="d-flex justify-content-end w-100 mt-4">
+						<a href="MenuAdmin.jsp" class="btn btn-outline-success text-dark "><strong>
+								Volver al menú</strong> </a>
+					</div>
+				</div>
 			</div>
-		</div>
 		</div>
 	</div>
 	<jsp:include page="Footer.jsp" />

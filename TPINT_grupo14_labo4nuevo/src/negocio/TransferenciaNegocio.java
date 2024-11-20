@@ -1,11 +1,10 @@
-package dao;
+package negocio;
+
 
 import java.math.BigDecimal;
 
-import entidad.Transferencia;
 
-public interface TransferenciaDao {
-	
+public interface TransferenciaNegocio {
 	public int insert(String cbuOrigen, String cbuDestino, String detalle, BigDecimal importe);
 	
 }
