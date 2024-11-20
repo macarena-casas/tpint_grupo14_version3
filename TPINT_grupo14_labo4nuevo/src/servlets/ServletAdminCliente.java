@@ -60,7 +60,7 @@ public class ServletAdminCliente extends HttpServlet {
     	}
     	
     	
-    	// condicion cuando este logeado
+    	
     	if (request.getParameter("btnAgregarCliente") != null) {
     		cargarDesplegables(request);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/AgregarCliente.jsp");
@@ -216,7 +216,7 @@ public class ServletAdminCliente extends HttpServlet {
 	               cLocalidad.setProvincia(cProvincia);        
 	               String contraseña = request.getParameter("contrasena");
 	               TipoUsuarioNegocioImpl tipoUsuarioNegocioImpl = new TipoUsuarioNegocioImpl();
-	               TipoUsuario tipoUsuario = tipoUsuarioNegocioImpl.get(2); //Valor por cliente       
+	               TipoUsuario tipoUsuario = tipoUsuarioNegocioImpl.get(2);  
 	               Usuario newUsuario = new Usuario();
 	               newUsuario.setNombreusuario(auxUsuario);
 	               newUsuario.setContraseña(contraseña);
@@ -262,12 +262,12 @@ public class ServletAdminCliente extends HttpServlet {
     
     private Date validarFechaNacimiento(Date fechaNacVal) throws Exception {
         try {
-            // Asegúrate de que la fecha no es nula
+            
             if (fechaNacVal == null) {
                 throw new Exception("La fecha de nacimiento no puede ser nula.");
             }
             
-            // Convertir a java.sql.Date
+            
             return new java.sql.Date(fechaNacVal.getTime());
         } catch (Exception e) {
             throw new Exception("Fecha de nacimiento inválida.");

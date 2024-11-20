@@ -1,115 +1,101 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="entidad.*"%>
+<%@ page import="javax.servlet.http.HttpSession"%>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agregar Cuenta</title>
 <link
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 <style>
 .bgLeft {
-	background: linear-gradient(45deg, mediumseagreen, seagreen, forestgreen,
-		forestgreen, seagreen, mediumseagreen);
+	background: linear-gradient(45deg, lightgreen, limegreen, darkgreen, limegreen,
+		lightgreen);
 	background-size: cover;
 }
 
 .bgRight {
-	background: linear-gradient(45deg, mediumseagreen, seagreen, forestgreen,
-		forestgreen, seagreen, mediumseagreen);
+	background: linear-gradient(45deg, lightgreen, limegreen, darkgreen, limegreen,
+		lightgreen);
 	background-size: cover;
 }
 </style>
-<head>
-
 </head>
-<body>
-	<br>
-	<br>
-	<title>Agregar Cuenta</title>
 
+<body>
 	<jsp:include page="NavBar.jsp" />
+	<%
+		String respuesta = null;
+		if (session != null && session.getAttribute("respuesta") != null) {
+			respuesta = (String) session.getAttribute("respuesta");
+			session.removeAttribute("respuesta");
+	%>
+	<script> alert('<%=respuesta%>');
+	</script>
+	<%
+		respuesta = null;
+		}
+	%>
 	<div class="d-flex">
-		<div class="w-10 bgLeft pt-5"></div>
-		<div class="w-90 p-4 bg-white bg-opacity-80 pt-5">
-			<div class="container mx-auto px-4 py-8">
-				<div class="w-66 mx-auto">
-					<center>
-						<h2 class="text-3xl font-medium title-font mb-2 text-gray-900">Nueva
-							Cuenta</h2>
-					</center>
+		<div class="col-1 bgLeft pt-5"></div>
+		<div class="col-10 p-4 bg-white bg-opacity-80 pt-5">
+			<div class="container"
+				style="width: 80%; overflow-y: auto; min-height: 400px;">
+				<div class="mx-auto">
+					<h2 class="text-center text-dark mt-3">Nueva Cuenta</h2>
 					<br>
-					<form action="ServletAdminCuenta" method="post"
-						onsubmit="return validarFormulario(event);">
-						<div class="row">
-							<center>
-								<div class="col-12 border-bottom pb-4">
-									<h3 class="text-lg font-medium title-font mb-2 text-gray-700">Datos
-										Personales</h3>
-								</div>
-							</center>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="nombre">Numero de cuenta:</label>
-								<input type="text" id="nroCuenta" name="nroCuenta"
-									maxlength="100" class="form-control" required>
+					<form action="ServletAdminCuentas" method="post"
+						onsubmit="validarFormulario(event)">
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="dni">DNI Cliente:</label> <input type="text"
+									id="dni" name="dni" class="form-control">
 							</div>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="nombre">Nombre:</label> <input
-									type="text" id="nombre" name="nombre" maxlength="100"
-									class="form-control" required>
-							</div>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="apellido">Apellido:</label> <input
-									type="text" id="apellido" name="apellido" maxlength="100"
-									class="form-control" required>
-							</div>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="dni">DNI:</label> <input
-									type="number" id="dni" name="dni" class="form-control" required>
-							</div>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="cuil">CUIL:</label> <input
-									type="number" id="cuil" name="cuil" class="form-control"
-									maxlength="13" required>
-							</div>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="sexo">Sexo:</label> <select
-									id="sexo" name="sexo" class="form-control">
-									<option value="M">M</option>
-									<option value="F">F</option>
-									<option value="X">X</option>
+							<div class="form-group col-md-6">
+								<label for="tipoCuenta">Tipo de Cuenta</label> <select
+									id="tipoCuenta" name="tipoCuenta" class="form-control">
+									<option value="caja de ahorro">Caja de Ahorro</option>
+									<option value="cuenta corriente">Cuenta Corriente</option>
 								</select>
 							</div>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="telefono">Teléfono:</label> <input
-									type="number" id="telefono" name="telefono"
-									class="form-control" required>
-							</div>
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="email">Email:</label> <input
-									type="email" id="email" maxlength="100" name="email"
-									class="form-control" required>
-							</div>
 						</div>
-
-
-
-						<center>
-							<button type="submit" id="btnAgregarCuentaNueva"
-								name="btnAgregarCuentaNueva" value="AgregarCuentaNueva"
-								class="btn btn-outline-success ">Agregar Cuenta</button>
-						</center>
+						<button type="submit" id="btnAgregarCuentaNueva"
+							name="btnAgregarCuentaNueva" value="AgregarCuentaNueva"
+							class="btn btn-outline-success text-dark ">Agregar</button>
 					</form>
+					<br>
 					<div class="d-flex justify-content-end w-100 mt-4">
-						<a href="MenuAdmin.jsp" class="btn btn-outline-success text-dark "><strong>
+						<a href="MenuCliente.jsp"
+							class="btn btn-outline-success text-dark "><strong>
 								Volver al menú</strong> </a>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="col-1 bgRight pt-5"></div>
 	</div>
+	<script>
+		function validarFormulario(event) {
+			const dniInput = document.getElementById('dni');
+			const dniValue = dniInput.value.trim();
+			if (dniValue.length !== 8) {
+				alert('DNI incorrecto. El DNI debe contener 8 números.');
+				dniInput.focus();
+				event.preventDefault();
+				return false;
+			}
+			const confirmacion = confirm('¿Desea agregar la cuenta?');
+			if (confirmacion) {
+				return true;
+			} else {
+				event.preventDefault();
+				return false;
+			}
+		}
+	</script>
 	<jsp:include page="Footer.jsp" />
-
 </body>
 </html>
