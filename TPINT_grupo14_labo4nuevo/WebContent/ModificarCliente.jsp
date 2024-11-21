@@ -173,11 +173,11 @@
 								<label class="form-label" for="sexo">Sexo:</label> <select
 									id="sexo" name="sexo" class="form-control">
 									<option value="M"
-										<%="M".equals(request.getAttribute("sexo")) ? "selected" : ""%>>M</option>
+										<%="M".equals(String.valueOf(auxCliente.getSexo())) ? "selected" : ""%>>M</option>
 									<option value="F"
-										<%="F".equals(request.getAttribute("sexo")) ? "selected" : ""%>>F</option>
+										<%="F".equals(String.valueOf(auxCliente.getSexo())) ? "selected" : ""%>>F</option>
 									<option value="X"
-										<%="X".equals(request.getAttribute("sexo")) ? "selected" : ""%>>X</option>
+										<%="X".equals(String.valueOf(auxCliente.getSexo())) ? "selected" : ""%>>X</option>
 								</select>
 
 
@@ -323,8 +323,7 @@
 					if (message != null) {
 				%>
 				<script>
-                            alert('<%=message%>
-					');
+                            alert('<%=message%>');
 				</script>
 				<%
 					}

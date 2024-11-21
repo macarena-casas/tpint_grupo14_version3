@@ -87,6 +87,7 @@ public class ServletAdminCliente extends HttpServlet {
 			String dni = request.getParameter("dni");
 			Cliente auxCliente = clienteNegocioImpl.get(dni);
 			request.setAttribute("ClienteDetalle", auxCliente);
+			
 			cargarDesplegables(request);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/ModificarCliente.jsp");
 			dispatcher.forward(request, response);

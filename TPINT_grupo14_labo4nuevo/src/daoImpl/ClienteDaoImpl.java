@@ -71,9 +71,11 @@ public class ClienteDaoImpl implements ClienteDao {
 				cone.setearConsulta(delete);
 				cone.setearParametros(1, cliente.getDni());
 				cone.setearParametros(2, cliente.getUsuario().getIdusuario());
-				cone.ejecutarAccion();
-
-				respuesta = "El cliente con DNI: " + cliente.getDni() + " fue eliminado exitosamente";
+				int filasafectadas = cone.ejecutarAccion();
+				if (filasafectadas > 0) {
+					cone.commit();
+					respuesta = "El cliente con DNI: " + cliente.getDni() + " fue eliminado exitosamente";
+				}
 			} else {
 				respuesta = "El cliente tiene prestamos vigentes y no puede darse de baja.";
 			}
@@ -81,13 +83,12 @@ public class ClienteDaoImpl implements ClienteDao {
 			e.printStackTrace();
 			cone.rollback();
 			respuesta = "El cliente con DNI: " + cliente.getDni() + " no se pudo eliminar";
-		  } finally {
-	            cone.cerrarConexion();
-	        }
+		} finally {
+			cone.cerrarConexion();
+		}
 
 		return respuesta;
 	}
-
 	public boolean prestamosPorCliente(String dni) {
 		Conexion cone = new Conexion();
 		boolean tienePrestamos = false;
