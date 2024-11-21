@@ -68,7 +68,7 @@
 					</form>
 					<br>
 					<div class="d-flex justify-content-end w-100 mt-4">
-						<a href="MenuCliente.jsp"
+						<a href="MenuAdmin.jsp"
 							class="btn btn-outline-success text-dark "><strong>
 								Volver al menú</strong> </a>
 					</div>
