@@ -115,7 +115,7 @@ h1 {
 		<!-- Tarjeta 1 -->
 		<div class="card">
 			<img
-				src="https://play-lh.googleusercontent.com/QB2eXpmsR9ihxgoFCgETxvzIGd2Rf9Yzfh1w5DCxEUf1h2BYh1i3kb05uzuawoqjxnJ9"
+				src="imagenes/bille.png"
 				alt="Cuenta">
 			<h3>
 				CBU:

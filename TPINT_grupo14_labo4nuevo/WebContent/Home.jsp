@@ -82,6 +82,10 @@
         .service-item button:hover {
             background-color: #1b5e20;
         }
+        .imghome{
+        	width:100%;
+        
+        }
     </style>
 </head>
 
@@ -97,16 +101,16 @@
             String userId = (String) session.getAttribute("usuario");
             if (userId != null) { 
         %>
-            <p>ID de Usuario: <strong><%= userId %></strong></p>
+            <p>Usuario: <strong><%= userId %></strong></p>
         <% 
             } else { 
         %>
-            <p>Error: Usuario no logueado</p>
+            <p> Usuario no logueado</p>
         <% 
             } 
         %>
         
-        <button>Conoce más</button>
+        
     </section>
 
    
@@ -115,17 +119,20 @@
             <div class="service-item">
                 <h3>Cuentas Bancarias</h3>
                 <p>Descubre nuestras cuentas de ahorro y corriente adaptadas a tus necesidades.</p>
-                <button>Más información</button>
+                <img class="imghome" src= "imagenes/cuentaBanc.jpg">
+                
             </div>
             <div class="service-item">
                 <h3>Préstamos</h3>
                 <p>Ofrecemos préstamos personales, hipotecarios y de automóviles con tasas competitivas.</p>
-                <button>Más información</button>
+               <img class="imghome" src="imagenes/prestamo.jpg">
             </div>
             <div class="service-item">
                 <h3>Transferencias</h3>
-                <p>Envía tu dinero de forma segura y sin comisiones.</p>
-                <button>Más información</button>
+                <p>Envía tu dinero de forma segura, rápida y sin comisiones.</p>
+               <img class="imghome" src= "imagenes/transfer.jpg"> 
+                
+               
             </div>
         </section>
     </div>
