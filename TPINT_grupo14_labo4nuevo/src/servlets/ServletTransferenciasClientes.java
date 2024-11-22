@@ -146,13 +146,13 @@ public class ServletTransferenciasClientes extends HttpServlet {
 			}
 
 			cargarCuentas(request, cliente);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/TransferenciasCuentaPropia.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/TransferenciasCuentaTerceros.jsp");
 			dispatcher.forward(request, response);
 		} 
 			}catch (Exception e) {
 			session.setAttribute("respuesta", e.getMessage());
 			cargarCuentas(request, cliente);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/TransferenciasCuentaPropia.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/TransferenciasCuentaTerceros.jsp");
 			dispatcher.forward(request, response);
 		}
 		}

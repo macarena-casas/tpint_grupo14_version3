@@ -73,6 +73,7 @@ public class PrestamoDaoImpl implements PrestamoDao {
 
 	@Override
 	public boolean update(int idPrestamo, int cuentaDestino) {
+		Conexion conexion = new Conexion();
 		boolean exitoso = false;
 		try {
 			conexion.setearConsulta(call);
