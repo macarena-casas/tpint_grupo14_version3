@@ -43,8 +43,8 @@
 		<div class="col-1 bgLeft pt-5"></div>
 		<div class="col-10 p-4 bg-white bg-opacity-80 pt-5">
 			<div class="container"
-				style="width: 80%; overflow-y: auto; min-height: 400px;">
-				<div class="mx-auto">
+				style="width: 80%; overflow-y: auto; min-height: 400px;margin-top: 10%">
+				
 					<h2 class="text-center text-dark mt-3">Nueva Cuenta</h2>
 					<br>
 					<form action="ServletAdminCuentas" method="post"
@@ -72,7 +72,7 @@
 							class="btn btn-outline-success text-dark "><strong>
 								Volver al menú</strong> </a>
 					</div>
-				</div>
+				
 			</div>
 		</div>
 		<div class="col-1 bgRight pt-5"></div>
