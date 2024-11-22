@@ -65,14 +65,14 @@
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="nombre">Cuil:</label> <input
 									type="text" id="Cuil" name="Cuil"
-									value="<%=request.getAttribute("cuil")%>"
-									class="form-control" disabled>
+									value="<%=request.getAttribute("cuil")%>" class="form-control"
+									disabled>
 							</div>
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="sexo">Sexo:</label> <input
 									type="text" id="sexo" name="sexo"
-									value="<%=request.getAttribute("sexo")%>"
-									class="form-control" disabled>
+									value="<%=request.getAttribute("sexo")%>" class="form-control"
+									disabled>
 							</div>
 							<div class="col-md-6 mb-4">
 								<label class="form-label" for="nacionalidad">Nacionalidad:</label>
@@ -124,11 +124,29 @@
 						</div>
 					</form>
 					<div class="d-flex justify-content-end w-100 mt-4">
+							<%
+								Boolean mostrarBoton = (Boolean) request.getAttribute("mostrarBoton");
+							%>
+							<%
+								if (mostrarBoton != null && mostrarBoton) {
+							%>
 						<form action="ServletAdminCliente" method="get">
-
 							<button type="submit" name="btnAtras1" value="Atras"
 								class="btn btn-outline-success text-dark">Atrás</button>
+
 						</form>
+						<%
+							}
+						%>
+						<%
+							if (mostrarBoton != null && !mostrarBoton) {
+						%>
+						<a href="Home.jsp" class="btn btn-outline-success text-dark "><strong>
+								Inicio</strong> </a>
+
+						<%
+							}
+						%>
 
 					</div>
 

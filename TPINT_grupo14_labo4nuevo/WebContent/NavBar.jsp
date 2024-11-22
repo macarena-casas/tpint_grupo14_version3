@@ -51,8 +51,9 @@
 				class="d-flex order-first order-lg-0 flex-grow-1 flex-lg-grow-0 title-font font-weight-medium align-items-center text-success justify-content-center mb-3 mb-md-0">
 
 				<img src="imagenes/logo.jpeg" alt="Green Emerald" class="img"
-				style="width: 60px; height: 60px; border-radius: 50%;"> <span
-				class="ml-3 text-black h3"><strong>Emerald-Bank</strong></span>
+				style="width: 60px; height: 60px; border-radius: 50%;"> <a
+				href="Home.jsp" class="ml-3 text-black h3"><strong>Emerald-Bank</strong></a>
+
 			</a>
 			<div class="flex-lg-grow-1 d-flex justify-content-end ml-3 ml-lg-0">
 				<%
@@ -65,11 +66,13 @@
 					} else {
 				%>
 
-				<a href="Home.jsp"
-					class="btn btn-outline-success border-0 py-1 px-3 hover:bg-green rounded text-base mt-3 mt-md-0"><strong><%=usuario%></strong></a>
-				<%
-					}
-				%>
+				<form action="ServletCliente" method="post">
+					<button type="submit" value="true"
+						class="btn btn-outline-success border-0 py-1 px-3 hover:bg-green rounded text-base mt-3 mt-md-0">
+						<strong><%=usuario%></strong>
+					</button>
+				</form>
+
 			</div>
 
 			<!-- Menú desplegable -->
@@ -85,7 +88,7 @@
 					class="dropdown-menu dropdown-menu-right mt-2 w-30 rounded shadow-lg bg-white"
 					id="menu">
 					<div class="py-1" role="none">
-						<a href="Home.jsp" class="dropdown-item text-dark">Inicio</a>
+
 
 						<%
 							if (tipoUsuario != null && tipoUsuario == 1) {
@@ -94,10 +97,6 @@
 
 						<a href="MenuAdmin.jsp"
 							class="dropdown-item border-bottom border-success text-dark">Menú</a>
-						<form action="ServletCliente" method="post">
-							<button type="submit" value="true"
-								class="dropdown-item text-dark">Ver detalle de cuenta</button>
-						</form>
 						<a href="ServletAdminCliente?btnAgregarCliente"
 							class="dropdown-item text-dark">Agregar Cliente</a> <a
 							href="ServletAdminCliente?btnAdminClientes"
@@ -119,10 +118,6 @@
 
 						<a href="MenuCliente.jsp"
 							class="dropdown-item border-bottom border-success text-dark">Menú</a>
-						<form action="ServletCliente" method="post">
-							<button type="submit" value="true"
-								class="dropdown-item text-dark">Ver detalle de cuenta</button>
-						</form>
 						<a href="ServletCliente?btnPerfil" class="dropdown-item text-dark">Perfil</a>
 						<a href="ServletCliente?btnCuentas"
 							class="dropdown-item text-dark">Cuentas</a> <a
@@ -144,6 +139,10 @@
 					</div>
 				</div>
 			</div>
+			<%
+				}
+			%>
+			
 		</div>
 	</header>
 

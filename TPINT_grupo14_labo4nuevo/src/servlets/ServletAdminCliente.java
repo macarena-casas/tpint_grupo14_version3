@@ -78,6 +78,7 @@ public class ServletAdminCliente extends HttpServlet {
 			Cliente auxCliente = (Cliente) listaClientes1.stream().filter(x -> x.getDni().equals(dni)).findFirst()
 					.orElse(null);
 			Usuario auxUsu = auxCliente.getUsuario();
+			
 			request.setAttribute("ClienteDetalle", auxCliente);
 			request.setAttribute("dni", dni);
 

@@ -74,6 +74,8 @@ public class ServletCliente extends HttpServlet {
 		request.setAttribute("telefono", cliente.getTelefono());
 		request.setAttribute("usuario", cliente.getUsuario().getNombreusuario());
 		request.setAttribute("contra", cliente.getUsuario().getContraseña());
+		boolean mostrarBoton = true;
+		request.setAttribute("mostrarBoton", mostrarBoton);
 		// Redirigir a la página JSP
 		request.getRequestDispatcher("/DetalleCliente.jsp").forward(request, response);
 	}
@@ -102,6 +104,11 @@ public class ServletCliente extends HttpServlet {
 				request.setAttribute("direccion", clienteaux.getDireccion());
 				request.setAttribute("correo", clienteaux.getCorreo());
 				request.setAttribute("telefono", clienteaux.getTelefono());
+				request.setAttribute("usuario", clienteaux.getUsuario().getNombreusuario());
+				request.setAttribute("contra", clienteaux.getUsuario().getContraseña());
+				request.setAttribute("fechanacimiento", clienteaux.getFechaNacimiento());
+				boolean mostrarBoton = false;
+				request.setAttribute("mostrarBoton", mostrarBoton);
 
 				request.getRequestDispatcher("DetalleCliente.jsp").forward(request, response);
 			} else {
