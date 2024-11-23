@@ -61,6 +61,9 @@
         const usuarioInput = document.getElementById('usuario').value;
         const apellidoInput = document.getElementById('apellido');
         const apellidoValue = apellidoInput.value.trim();
+        const fechaNacimientoInput = document.getElementById('fechanacimiento');
+        const fechaNacimientoValue = fechaNacimientoInput.value.trim();
+
 
         const textoValido = /^[a-zA-Z\s]+$/;
         const textoValidoUsuario = /^[a-zA-Z0-9]+$/;
@@ -111,7 +114,24 @@
             telefonoInput.focus(); 
             event.preventDefault(); 
             return false;
+        } 
+        const fechaMinima = new Date('1930-01-01');
+        const fechaMaxima = new Date('2006-01-01');
+        const fechaNacimiento = new Date(fechaNacimientoValue); 
+        
+        if (isNaN(fechaNacimientoValue.getTime())) { 
+        alert('Fecha de nacimiento incorrecta. Por favor, ingrese una fecha válida.'); 
+        fechaNacimientoInput.focus(); 
+        event.preventDefault(); 
+        return false; }
+        
+        if (fechaNacimiento < fechaMinima || fechaNacimiento > fechaMaxima){
+        alert('Fecha de nacimiento incorrecta. La fecha debe estar entre 1930-01-01 y 2006-01-01.');
+        fechaNacimientoInput.focus(); 
+        event.preventDefault(); 
+        return false;
         }
+        
         
         
         const confirmacion = confirm('¿Desea agregar el cliente?');
@@ -321,8 +341,7 @@
 					if (message != null) {
 				%>
 				<script>
-				  alert('<%=message%>
-					');
+				  alert('<%=message%>');
 				</script>
 				<%
 					}
