@@ -224,7 +224,7 @@ public class ServletAdminCliente extends HttpServlet {
 	               newUsuario.setContraseña(contraseña);
 	               newUsuario.setTipoUsuario(tipoUsuario);
 	               usuarioNegocioImpl.insert(newUsuario);
-	               int idusuario =usuarioNegocioImpl.list().size();
+	               int idusuario =usuarioNegocioImpl.getultimoId();
 	               newUsuario = usuarioNegocioImpl.get(idusuario); 
 	      	       Cliente Clientenuevo = new Cliente(
 	            			auxDni,         			

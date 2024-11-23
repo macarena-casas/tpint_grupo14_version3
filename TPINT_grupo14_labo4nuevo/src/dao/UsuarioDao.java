@@ -13,5 +13,6 @@ public interface UsuarioDao {
 	Usuario buscarUsuario(String nombreUsuario);
 	boolean existeNombreUsuario(String nombre);
 	
+	int ultimoId();
 	
 }

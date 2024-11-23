@@ -38,4 +38,9 @@ public class UsuarioNegocioImpl implements UsuarioNegocio {
     public boolean existeNombreUsuario(String nombre) {
         return usuarioDao.existeNombreUsuario(nombre);
     }
+	@Override
+	public int getultimoId() {
+		
+		return usuarioDao.ultimoId();
+	}
 }

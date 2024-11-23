@@ -19,7 +19,8 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	private static final String get = "SELECT * FROM usuarios WHERE usuario_id = ?";
 	private static final String queryExiste = "SELECT COUNT(*) FROM usuarios WHERE estado = 1 AND nombre_usuario = ?";
 	private static final String queryBuscar = "SELECT usuario_id, nombre_usuario, password, tipo_usuario_id FROM usuarios WHERE estado = 1 AND nombre_usuario = ?";
-	
+	private static final String getlastId = "SELECT usuario_id FROM usuarios  ORDER BY usuario_id DESC LIMIT 1";
+
 	
 
 	@Override
@@ -200,5 +201,23 @@ public class UsuarioDaoImpl implements UsuarioDao {
     }
 
 
+
+	@Override
+	public int ultimoId() {
+		Conexion conexion = new Conexion();
+		try {
+			conexion.setearConsulta(getlastId);
+			ResultSet result_set = conexion.ejecutarLectura();
+			while (result_set.next()) {
+				int lastId = result_set.getInt("usuario_id");
+				return lastId;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conexion.cerrarConexion();
+		}
+		return 0;
+	}
 
 }

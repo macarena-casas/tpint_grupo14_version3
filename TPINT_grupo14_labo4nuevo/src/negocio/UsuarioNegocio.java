@@ -13,5 +13,6 @@ public interface UsuarioNegocio {
 	public ArrayList<Usuario> list();
 	Usuario buscarUsuario(String nombreUsuario);
 	boolean existeNombreUsuario(String nombre);
+	public int getultimoId();
 }
 
