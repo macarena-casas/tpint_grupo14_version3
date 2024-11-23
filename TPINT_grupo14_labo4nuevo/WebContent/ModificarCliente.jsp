@@ -285,7 +285,7 @@
 									for="usuario">Nombre de Usuario:</label> <input type="text"
 									id="usuario" maxlength="15" name="usuario"
 									value="<%=auxCliente.getUsuario().getNombreusuario()%>"
-									class="form-control">
+									class="form-control" readonly>
 							</div>
 							<div class="mb-4">
 								<label class="block text-gray-700 text-sm font-bold mb-2"

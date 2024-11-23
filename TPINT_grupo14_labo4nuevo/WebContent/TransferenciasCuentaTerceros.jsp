@@ -46,6 +46,30 @@
 	margin-top: 20%;
 }
 </style>
+<script>
+
+    function validarFormulario(event) {
+       
+        const cbuInput = document.getElementById('CuentaDestino');
+        const cbuValue = cbuInput.value.trim();
+    
+        if (cbuValue.length !== 22) {
+            alert('cbu destino incorrecto. El cbu debe contener 22 números.');
+            cbuInput.focus();
+            event.preventDefault(); 
+            return false;
+        }
+          
+        const confirmacion = confirm('¿Desea Realizar la transferencia?');
+        if (confirmacion) {
+            return true; 
+        } else {
+        	event.preventDefault();
+            return false; 
+        }
+     
+    }
+</script>
 </head>
 <body>
 	<jsp:include page="NavBar.jsp" />
@@ -66,7 +90,7 @@
 							<br>
 							<form class="d-flex flex-column align-items-center w-100"
 								action="ServletTransferenciasClientes" method="post"
-								onsubmit="return confirmacion();">
+								onsubmit="validarFormulario(event);">
 								<div class="form-group ancho">
 									<label for="CuentaOrigen" class="font-weight-bold">CBU
 										de Origen:</label> <select id="CuentaOrigen" name="CuentaOrigen"
@@ -94,7 +118,7 @@
 
 								<div class="form-group ancho">
 									<label for="CuentaDestino" class="font-weight-bold">CBU
-										de Destino:</label> <input type="number" required id="CuentaDestino"
+										de Destino:</label> <input type="number" required id="CuentaDestino" min="0000000000000000000000"
 										max="9999999999999999999999" name="CuentaDestino"
 										class="form-control">
 								</div>
@@ -106,8 +130,8 @@
 								</div>
 								<div class="form-group ancho">
 									<label for="importe" class="font-weight-bold">Importe:</label>
-									<input required type="number" max="99999999" step="any"
-										min="1" id="importe" name="importe" class="form-control">
+									<input type="number" max="99999999" step="any"
+										min="1" id="importe" name="importe" class="form-control" required>
 								</div>
 								<div class="d-flex flex-column align-items-center w-100">
 									<button type="submit" name="btnTransferir2"
@@ -133,9 +157,6 @@
 			$('#tablaCuentas').DataTable();
 		});
 
-		function confirmacion() {
-			return confirm('¿Desea realizar la transferencia?');
-		}
 	</script>
 </body>
 </html>
